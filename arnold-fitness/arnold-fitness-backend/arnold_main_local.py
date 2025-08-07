@@ -16,9 +16,9 @@ from colorama import init, Fore, Style
 # Inizializza colorama per Windows
 init()
 
-# Imposta modalita non-interattiva per troubleshooting
+# Imposta modalita non-interattiva per troubleshooting  
 # os.environ["PENELOPE_NON_INTERACTIVE"] = "true"
-print(f"DEBUG: PENELOPE_NON_INTERACTIVE = {os.environ.get('PENELOPE_NON_INTERACTIVE')}")  # AGGIUNGI QUESTO
+
 # Setup path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
@@ -28,15 +28,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Debug: mostra checklist disponibili
-print("Available checklists:")
-checklist_dir = Path("data/checklists")
-if checklist_dir.exists():
-    for f in checklist_dir.glob("*.json"):
-        print(f"  - {f.name}")
+# Debug: mostra checklist disponibili (solo se non chiamato come modulo)
+if __name__ == "__main__":
+    print(f"DEBUG: PENELOPE_NON_INTERACTIVE = {os.environ.get('PENELOPE_NON_INTERACTIVE')}")
+    print("Available checklists:")
+    checklist_dir = Path("data/checklists")
+    if checklist_dir.exists():
+        for f in checklist_dir.glob("*.json"):
+            print(f"  - {f.name}")
+    else:
+        print(f"  ERROR: Directory not found: {checklist_dir.absolute()}")
+    print()
 else:
-    print(f"  ERROR: Directory not found: {checklist_dir.absolute()}")
-print()
+    checklist_dir = Path("data/checklists")
 
 
 # ===== MOCK SOLO DYNAMODB =====
@@ -326,7 +330,9 @@ boto3.resource = mock_resource
 boto3.client = mock_client
 
 # ===== IMPORTA HANDLERS =====
-print("[IMPORT] Importing AWS Lambda handlers...")
+if __name__ == "__main__":
+    print("[IMPORT] Importing AWS Lambda handlers...")
+
 try:
     from backend.lambda_handlers import (
         create_session_handler,
@@ -334,18 +340,21 @@ try:
         get_session_context_handler
     )
 
-    print("[SUCCESS] Lambda handlers imported successfully\n")
+    if __name__ == "__main__":
+        print("[SUCCESS] Lambda handlers imported successfully\n")
 except Exception as e:
-    print(f"[ERROR] Error importing Lambda handlers: {e}\n")
+    if __name__ == "__main__":
+        print(f"[ERROR] Error importing Lambda handlers: {e}\n")
     raise
 
 
 # ===== CLI INTERFACE =====
 class AWSLocalCLI:
-    def __init__(self):
+    def __init__(self, silent=False):
         self.current_session_id = None
         self.interceptor = OutputInterceptor()
         self.differ = ContextDiffer()
+        self.silent = silent
 
     def create_session(self, pt_type="webapp"):
         """Crea sessione usando il vero handler AWS"""
@@ -397,10 +406,11 @@ class AWSLocalCLI:
 
     def send_message(self, message: str) -> dict:
         """Send a message and get response"""
-        print(f"\n{Fore.YELLOW}[PROCESSING] Processing...{Style.RESET_ALL}")
+        if not self.silent:
+            print(f"\n{Fore.YELLOW}[PROCESSING] Processing...{Style.RESET_ALL}")
 
         # Salva contesto prima
-        before_context = self.get_test_context()
+        before_context = self.get_test_context() if not self.silent else None
 
         # Prepare request
         request_body = {
@@ -420,63 +430,64 @@ class AWSLocalCLI:
             if response["statusCode"] == 200:
                 body = json.loads(response["body"])
 
-                # Mostra i cambiamenti del contesto
-                after_context = self.get_test_context()
-                self.differ.display_context_changes(before_context, after_context)
+                if not self.silent:
+                    # Mostra i cambiamenti del contesto
+                    after_context = self.get_test_context()
+                    self.differ.display_context_changes(before_context, after_context)
 
-                # NUOVO: Mostra info sui token se disponibili
-                # NUOVO: Mostra info sui token se disponibili
-                if "token_usage" in body:
-                    token_info = body["token_usage"]
-                    print(f"\n[TOKENS] Token Usage:")
+                    # NUOVO: Mostra info sui token se disponibili
+                    if "token_usage" in body:
+                        token_info = body["token_usage"]
+                        print(f"\n[TOKENS] Token Usage:")
 
-                    # Ciclo corrente
-                    print(f"   === Ciclo Corrente ===")
-                    print(f"   Input tokens: {token_info.get('prompt_tokens', 0):,}")
-                    print(f"   Output tokens: {token_info.get('completion_tokens', 0):,}")
-                    print(f"   Total tokens: {token_info.get('total_tokens', 0):,}")
-                    print(f"   Costo ciclo: ${token_info.get('estimated_cost', 0):.4f}")
+                        # Ciclo corrente
+                        print(f"   === Ciclo Corrente ===")
+                        print(f"   Input tokens: {token_info.get('prompt_tokens', 0):,}")
+                        print(f"   Output tokens: {token_info.get('completion_tokens', 0):,}")
+                        print(f"   Total tokens: {token_info.get('total_tokens', 0):,}")
+                        print(f"   Costo ciclo: ${token_info.get('estimated_cost', 0):.4f}")
 
-                    # Totale sessione
-                    if 'session_total_tokens' in token_info:
-                        print(f"\n   === TOTALE SESSIONE ===")
-                        print(f"   Input tokens totali: {token_info.get('session_input_tokens', 0):,}")
-                        print(f"   Output tokens totali: {token_info.get('session_output_tokens', 0):,}")
-                        print(f"   [TOTAL] TOTAL TOKENS: {token_info.get('session_total_tokens', 0):,}")
-                        print(f"   [COST] COSTO TOTALE: ${token_info.get('session_total_cost_usd', 0):.4f}")
+                        # Totale sessione
+                        if 'session_total_tokens' in token_info:
+                            print(f"\n   === TOTALE SESSIONE ===")
+                            print(f"   Input tokens totali: {token_info.get('session_input_tokens', 0):,}")
+                            print(f"   Output tokens totali: {token_info.get('session_output_tokens', 0):,}")
+                            print(f"   [TOTAL] TOTAL TOKENS: {token_info.get('session_total_tokens', 0):,}")
+                            print(f"   [COST] COSTO TOTALE: ${token_info.get('session_total_cost_usd', 0):.4f}")
 
-                    # Statistiche sessione
-                    if 'session_stats' in token_info:
-                        stats = token_info['session_stats']
-                        print(f"\n   === Statistiche Sessione ===")
-                        print(f"   Durata: {stats.get('duration_minutes', 0):.1f} minuti")
-                        print(f"   Token/minuto: {stats.get('average_tokens_per_minute', 0):.1f}")
-                        print(f"   Costo/minuto: ${stats.get('cost_per_minute_usd', 0):.4f}")
+                        # Statistiche sessione
+                        if 'session_stats' in token_info:
+                            stats = token_info['session_stats']
+                            print(f"\n   === Statistiche Sessione ===")
+                            print(f"   Durata: {stats.get('duration_minutes', 0):.1f} minuti")
+                            print(f"   Token/minuto: {stats.get('average_tokens_per_minute', 0):.1f}")
+                            print(f"   Costo/minuto: ${stats.get('cost_per_minute_usd', 0):.4f}")
 
-                    # Breakdown per operazione
-                    if 'operation_breakdown' in token_info:
-                        print(f"\n   === Breakdown per Operazione ===")
-                        breakdown = token_info['operation_breakdown']
-                        for op_type, data in breakdown.items():
-                            print(
-                                f"   {op_type}: {data['total_tokens']:,} tokens (${data['cost_usd']:.4f}) - {data['calls']} chiamate")
+                        # Breakdown per operazione
+                        if 'operation_breakdown' in token_info:
+                            print(f"\n   === Breakdown per Operazione ===")
+                            breakdown = token_info['operation_breakdown']
+                            for op_type, data in breakdown.items():
+                                print(
+                                    f"   {op_type}: {data['total_tokens']:,} tokens (${data['cost_usd']:.4f}) - {data['calls']} chiamate")
 
-                # Mostra la guidance
-                guidance = body.get("last_output", {}).get("guidance_markdown", "")
-                if guidance:
-                    print(f"\n{Fore.GREEN}{Style.BRIGHT}")
-                    print("=" * 60)
-                    print("Assistant:")
-                    print("=" * 60)
-                    print(f"{Style.RESET_ALL}{guidance}")
-                    print("=" * 60)
+                    # Mostra la guidance
+                    guidance = body.get("last_output", {}).get("guidance_markdown", "")
+                    if guidance:
+                        print(f"\n{Fore.GREEN}{Style.BRIGHT}")
+                        print("=" * 60)
+                        print("Assistant:")
+                        print("=" * 60)
+                        print(f"{Style.RESET_ALL}{guidance}")
+                        print("=" * 60)
 
                 return body
             else:
                 raise Exception(f"Chat processing failed: {response}")
 
         except Exception as e:
-            print(f"\n{Fore.RED}[ERROR] Error processing message: {str(e)}{Style.RESET_ALL}")
+            if not self.silent:
+                print(f"\n{Fore.RED}[ERROR] Error processing message: {str(e)}{Style.RESET_ALL}")
             raise
 
     def get_context(self):
@@ -493,6 +504,10 @@ class AWSLocalCLI:
         if response["statusCode"] == 200:
             return json.loads(response["body"])
         return None
+
+    def get_current_context(self):
+        """Alias for get_context for compatibility with clean CLI"""
+        return self.get_context()
 
     def show_checklist_status(self):
         """Mostra lo stato attuale della checklist in modo compatto"""
@@ -614,6 +629,9 @@ def main():
             import traceback
             traceback.print_exc()
 
+
+# Alias for compatibility with arnold_chat_clean.py
+ArnoldCLI = AWSLocalCLI
 
 if __name__ == "__main__":
     # Verifica environment
