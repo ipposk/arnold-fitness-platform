@@ -48,7 +48,7 @@ class ArnoldCleanChat:
             logging.getLogger().setLevel(logging.CRITICAL)  # Suppress all logs
             
             from arnold_main_local import ArnoldCLI
-            self.arnold = ArnoldCLI()
+            self.arnold = ArnoldCLI(silent=True)  # Use silent mode!
             
         except Exception as e:
             print(f"{ChatColors.ERROR}Problema di connessione. Riprova più tardi.{ChatColors.RESET}")
@@ -70,14 +70,8 @@ class ArnoldCleanChat:
     def _create_session_silently(self):
         """Create session without any technical output"""
         try:
-            # Create session hiding all technical details
-            old_stdout = sys.stdout
-            sys.stdout = open(os.devnull, 'w')
-            
+            # Create session using silent backend
             self.session_id = self.arnold.create_session()
-            
-            sys.stdout.close()
-            sys.stdout = old_stdout
             
         except Exception:
             print(f"{ChatColors.ERROR}Problema di connessione. Riprova più tardi.{ChatColors.RESET}")
@@ -119,15 +113,8 @@ class ArnoldCleanChat:
     def _get_clean_response(self, user_message):
         """Get Arnold's response hiding ALL technical output"""
         try:
-            # Capture and hide ALL output from Arnold processing
-            import io
-            from contextlib import redirect_stdout, redirect_stderr
-            
-            captured_output = io.StringIO()
-            
-            with redirect_stdout(captured_output), redirect_stderr(captured_output):
-                # Send message to Arnold
-                response = self.arnold.send_message(user_message)
+            # Send message to Arnold (already in silent mode)
+            response = self.arnold.send_message(user_message)
             
             # Extract only the conversational part
             return self._extract_conversation_text(response)
@@ -231,23 +218,21 @@ class ArnoldCleanChat:
     def _show_context(self):
         """Show conversation context (for power users)"""
         try:
-            # Get context from Arnold silently
-            import io
-            from contextlib import redirect_stdout, redirect_stderr
-            
-            captured = io.StringIO()
-            with redirect_stdout(captured), redirect_stderr(captured):
-                context = self.arnold.get_current_context()
+            # Get context from Arnold (silent mode)
+            context = self.arnold.get_current_context()
             
             # Show only relevant information
             print(f"{ChatColors.SYSTEM}Stato della conversazione:")
-            if context and 'current_phase_id' in context:
-                phase = context.get('current_phase_id', 'Unknown')
-                print(f"  Fase attuale: {phase}")
-            
-            if context and 'goal' in context:
-                goal = context.get('goal', 'Non definito')
-                print(f"  Obiettivo: {goal}")
+            if context and 'context' in context:
+                ctx_data = json.loads(context['context']) if isinstance(context['context'], str) else context['context']
+                
+                if 'current_phase_id' in ctx_data:
+                    phase = ctx_data.get('current_phase_id', 'Unknown')
+                    print(f"  Fase attuale: {phase}")
+                
+                if 'goal' in ctx_data:
+                    goal = ctx_data.get('goal', 'Non definito')
+                    print(f"  Obiettivo: {goal}")
             
             print(f"{ChatColors.RESET}")
             
@@ -269,7 +254,7 @@ class ArnoldCleanChat:
     
     def _graceful_exit(self):
         """Clean exit"""
-        print(f"\n{ChatColors.ARNOLD}Arnold: È stato un piacere aiutarti! Prenditi cura di te.{ChatColors.RESET}")
+        print(f"\n{ChatColors.ARNOLD}Arnold: E' stato un piacere aiutarti! Prenditi cura di te.{ChatColors.RESET}")
         print(f"{ChatColors.SYSTEM}Arrivederci!{ChatColors.RESET}")
 
 def main():
