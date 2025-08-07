@@ -139,7 +139,14 @@ class GeminiClient:
                 self.operation_breakdown[self.current_operation_type]["output"] += candidates_tokens
                 self.operation_breakdown[self.current_operation_type]["count"] += 1
 
-        if hasattr(response, "text"):
+        if hasattr(response, "text") and response.text:
             return response.text.strip()
-        else:
-            raise RuntimeError(f"Errore nella risposta LLM: {response}")
+        elif hasattr(response, "candidates") and response.candidates:
+            # Prova a estrarre il testo dai candidates
+            try:
+                return response.candidates[0].content.parts[0].text.strip()
+            except (IndexError, AttributeError):
+                pass
+        
+        # Se non riesci a estrarre il testo, ritorna errore descrittivo
+        raise RuntimeError(f"Impossibile estrarre testo dalla risposta LLM. Response type: {type(response)}, hasattr text: {hasattr(response, 'text')}")

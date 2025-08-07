@@ -529,6 +529,15 @@ class AWSLocalCLI:
 
 def format_guidance_output(guidance_markdown):
     """Formatta l'output della guidance in modo piu leggibile"""
+    # Controllo di sicurezza per evitare errori con dizionari
+    if not isinstance(guidance_markdown, str):
+        print(f"[ERROR] format_guidance_output ricevuto {type(guidance_markdown)} invece di str")
+        if isinstance(guidance_markdown, dict):
+            # Prova a estrarre markdown dal dict
+            guidance_markdown = guidance_markdown.get('guidance_markdown', str(guidance_markdown))
+        else:
+            guidance_markdown = str(guidance_markdown)
+    
     lines = guidance_markdown.split('\n')
     formatted_lines = []
 

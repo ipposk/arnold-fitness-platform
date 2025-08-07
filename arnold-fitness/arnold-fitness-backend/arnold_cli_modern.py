@@ -43,6 +43,14 @@ def print_box(title, content, color=Fore.WHITE, width=80):
     print("=" * width + Style.RESET_ALL)
     print()
     
+    # Controllo di sicurezza per il contenuto
+    if not isinstance(content, str):
+        print(f"[ERROR] print_box ricevuto {type(content)} invece di str")
+        if isinstance(content, dict):
+            content = content.get('guidance_markdown', str(content))
+        else:
+            content = str(content)
+    
     # Dividi il contenuto in linee
     for line in content.strip().split('\n'):
         if line.strip():
