@@ -73,6 +73,67 @@ def merge_context(base_context: dict, updated_fields: dict) -> dict:
     return merged
 
 
+def is_assessment_complete(context: dict) -> bool:
+    """
+    Verifica se tutti i check ASS-001 a ASS-022 sono completati (state = 'completed').
+    Necessario prima di passare ai consigli nutrizionali.
+    """
+    if "checklist" not in context:
+        return False
+        
+    for phase in context.get("checklist", []):
+        if phase.get("phase_id") == "ASS":
+            for task in phase.get("tasks", []):
+                for check in task.get("checks", []):
+                    check_id = check.get("check_id", "")
+                    if check_id.startswith("ASS-") and check.get("state") != "completed":
+                        print(f"[DEBUG] Assessment incompleto: {check_id} state={check.get('state')}")
+                        return False
+    
+    print("[DEBUG] Assessment ASS-001 a ASS-022 completato!")
+    return True
+
+
+def get_next_assessment_check(context: dict) -> dict:
+    """
+    Trova il prossimo check ASS-xxx che deve essere completato in sequenza.
+    Ritorna il check o None se assessment è completo.
+    """
+    if "checklist" not in context:
+        return None
+        
+    for phase in context.get("checklist", []):
+        if phase.get("phase_id") == "ASS":
+            for task in phase.get("tasks", []):
+                for check in task.get("checks", []):
+                    check_id = check.get("check_id", "")
+                    if check_id.startswith("ASS-") and check.get("state") != "completed":
+                        print(f"[DEBUG] Prossimo assessment check: {check_id}")
+                        return {
+                            "check_id": check_id,
+                            "description": check.get("description"),
+                            "task_title": task.get("title"),
+                            "phase_id": phase.get("phase_id")
+                        }
+    
+    return None
+
+
+def should_block_nutrition_advice(context: dict) -> bool:
+    """
+    Determina se i consigli nutrizionali devono essere bloccati.
+    True = blocca (assessment incompleto), False = permetti.
+    """
+    assessment_complete = is_assessment_complete(context)
+    
+    if not assessment_complete:
+        print("[DEBUG] BLOCCANDO consigli nutrizionali - assessment incompleto")
+        return True
+    else:
+        print("[DEBUG] PERMETTENDO consigli nutrizionali - assessment completo")
+        return False
+
+
 def format_suggested_actions_to_markdown(suggested_actions: list, intro: str = None, outro: str = None) -> str:
     """
     Converte le azioni suggerite dall'LLM in formato markdown strutturato.
@@ -462,8 +523,21 @@ class Orchestrator:
             filtered_ctx = filter_current_in_progress_checklist(updated_context)
             query_data = self.query_generator_llm.generate_query(filtered_ctx) or {}
 
-            # === 5. Generazione GUIDANCE ===
-            guidance_json_str = self.task_guidance_llm.generate_guidance(filtered_ctx, query_data)
+            # === 5. Generazione GUIDANCE con controllo assessment ===
+            
+            # Verifica se l'assessment è completo prima di generare guidance nutrizionale
+            block_nutrition = should_block_nutrition_advice(updated_context)
+            next_assessment_check = get_next_assessment_check(updated_context)
+            
+            # Aggiungi info di controllo al contesto per il TaskGuidanceLLM
+            guidance_context = filtered_ctx.copy()
+            guidance_context["assessment_status"] = {
+                "is_complete": is_assessment_complete(updated_context),
+                "block_nutrition_advice": block_nutrition,
+                "next_check": next_assessment_check
+            }
+            
+            guidance_json_str = self.task_guidance_llm.generate_guidance(guidance_context, query_data)
 
             if not guidance_json_str:
                 self.logger.log_error("TaskGuidanceLLM non ha prodotto output.", {"test_id": test_id})
