@@ -1,0 +1,9 @@
+venv/
+.env
+local_run_data/
+*.pyc
+__pycache__/
+.vscode/
+.idea/
+local_test_outputs
+local_test_sessions

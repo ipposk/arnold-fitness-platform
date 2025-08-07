@@ -1,0 +1,50 @@
+[
+  {
+    "question": "Principi fondamentali per resistance training orientato all'ipertrofia muscolare?",
+    "answer": "PRINCIPI EVIDENZIATI DALLA RICERCA:\n\n**1. SOVRACCARICO PROGRESSIVO:**\n• **Definizione**: Incremento graduale stress meccanico sui muscoli\n• **Metodi**: Aumento peso, ripetizioni, serie, densità, ROM\n• **Implementazione**: +2.5-5kg quando raggiunte tutte reps target\n• **Frequenza**: Progressione ogni 1-2 settimane\n\n**2. VOLUME TRAINING OTTIMALE:**\n• **Principianti**: 10-12 serie/gruppo muscolare/settimana\n• **Intermedi**: 12-16 serie/gruppo muscolare/settimana\n• **Avanzati**: 16-20+ serie/gruppo muscolare/settimana\n• **Distribuzione**: 2-3 sessioni/settimana per gruppo\n\n**3. INTENSITÀ E REP RANGES:**\n• **Ipertrofia primaria**: 6-12 reps (70-85% 1RM)\n• **Range efficace**: 6-30 reps se portato a cedimento\n• **Ottimale**: Maggioranza 8-15 reps per ipertrofia\n• **Meccanotrasduzionie**: Tensione, stress metabolico, danno muscolare\n\n**4. FREQUENZA ALLENAMENTO:**\n• **Minimo efficace**: 2x/settimana per gruppo muscolare\n• **Ottimale**: 2-3x/settimana (volume equi-distribuito)\n• **Recovery**: 48-72h tra sessioni stesso gruppo\n\n**5. TEMPO SOTTO TENSIONE (TUT):**\n• **Concentrica**: 1-2 secondi (esplosiva controllata)\n• **Eccentrica**: 2-4 secondi (controllo negativo)\n• **Range totale**: 30-70 secondi per serie",
+    "metadata": {
+      "category": "training",
+      "subcategory": "resistance_principles",
+      "checklist_ids": ["MG-006", "MG-007", "MG-008"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["progressive_overload", "hypertrophy", "volume", "intensity", "frequency", "TUT"]
+    }
+  },
+  {
+    "question": "Periodizzazione per muscle gain - modelli di programmazione scientificamente validati?",
+    "answer": "MODELLI PERIODIZZAZIONE IPERTROFIA:\n\n**1. PERIODIZZAZIONE LINEARE:**\n• **Settimane 1-4**: Volume alto, intensità moderata (12-15 reps)\n• **Settimane 5-8**: Volume moderato, intensità alta (6-8 reps)\n• **Settimane 9-12**: Volume basso, intensità molto alta (3-5 reps)\n• **Pro**: Semplice programmazione\n• **Contro**: Plateau potenziale negli avanzati\n\n**2. PERIODIZZAZIONE ONDULATA (DUP):**\n• **Lunedì**: Ipertrofia (8-12 reps, 70-80% 1RM)\n• **Mercoledì**: Forza (3-6 reps, 85-95% 1RM)\n• **Venerdì**: Potenza (6-8 reps, 80-85% 1RM, veloce)\n• **Vantaggi**: Stimoli diversi, minor adattamento\n\n**3. BLOCK PERIODIZATION:**\n• **Accumulation** (4-6 settimane): Volume elevato, intensità moderata\n• **Intensification** (2-4 settimane): Volume ridotto, intensità alta\n• **Realization** (1-2 settimane): Taper e test\n\n**4. CONCURRENT MODEL (per natural lifters):**\n• Mantenimento stimoli ipertrofici costanti\n• Variazione carico/volume entro parametri ottimali\n• Deload ogni 4-6 settimane (riduzione 40-60% volume)\n\n**RACCOMANDAZIONE BEGINNER-INTERMEDIATE:**\n• Linear progression su compound lifts\n• DUP per varietà stimoli\n• Deload programmati per recovery",
+    "metadata": {
+      "category": "training",
+      "subcategory": "periodization",
+      "checklist_ids": ["MG-009", "MG-010", "MG-011"],
+      "difficulty": "advanced",
+      "evidence_level": "high",
+      "tags": ["periodization", "linear_progression", "DUP", "block_periodization", "programming", "deload"]
+    }
+  },
+  {
+    "question": "Selezione esercizi per massimizzare sviluppo muscolare - compound vs isolation?",
+    "answer": "STRATEGIA SELEZIONE ESERCIZI EVIDENCE-BASED:\n\n**COMPOUND LIFTS (Foundation):**\n• **Squat**: Quadriceps, glutei, core, stabilizzatori\n• **Deadlift**: Catena posteriore completa, grip, core\n• **Bench Press**: Petto, deltoidi anteriori, tricipiti\n• **Row**: Dorsali, romboidi, posterior delts, bicipiti\n• **Overhead Press**: Deltoidi, tricipiti, core, stabilità\n\n**VANTAGGI COMPOUND:**\n• Higher motor unit recruitment\n• Maggior carico assoluto gestibile\n• Efficienza temporale (più muscoli stimolati)\n• Functional strength transfer\n• Stimolo sistemico (ormonale, metabolico)\n\n**ISOLATION EXERCISES (Specialization):**\n• **Targeted hypertrophy**: Focus muscoli specifici\n• **Weak point addressing**: Colmare gap development\n• **Volume aggiuntivo**: Senza eccessivo stress sistemico\n• **Injury prevention**: Correzione imbalances\n\n**RAPPORTO OTTIMALE:**\n• **70-80% compound movements** (base del programma)\n• **20-30% isolation** (finishing touches, specialization)\n\n**PROGRAMMAZIONE PRATICA:**\n**Sessione Tipo Upper:**\n1. Compound: Bench Press 4×6-8\n2. Compound: Row 4×6-8\n3. Compound: Overhead Press 3×8-10\n4. Isolation: Lateral raises 3×12-15\n5. Isolation: Bicep curls 3×10-12\n6. Isolation: Tricep extensions 3×10-12\n\n**PRINCIPIO**: Prima i grandi, poi i piccoli",
+    "metadata": {
+      "category": "training",
+      "subcategory": "exercise_selection",
+      "checklist_ids": ["MG-012", "MG-013", "MG-014"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["compound_exercises", "isolation_exercises", "exercise_selection", "muscle_building", "programming_hierarchy"]
+    }
+  },
+  {
+    "question": "Recovery e ottimizzazione adattamenti: sonno, nutrizione peri-workout, stress management?",
+    "answer": "RECOVERY OTTIMALE PER MUSCLE GAIN:\n\n**1. SONNO (Priorità #1):**\n• **Durata**: 7-9 ore/notte (athletes: 8-10h)\n• **Qualità**: Deep sleep per rilascio GH\n• **Timing**: Costanza orari addormentamento/risveglio\n• **Sleep hygiene**: Buio, 18-20°C, no schermi 1h prima\n• **Impatto**: Sleep debt = -20% sintesi proteica\n\n**2. NUTRIZIONE PERI-WORKOUT:**\n**Pre-Workout (1-2h prima):**\n• Carboidrati: 30-60g (performance energetica)\n• Proteine: 20-30g (aminoacidi circolanti)\n• Esempio: Banana + whey, o pane + prosciutto\n\n**Post-Workout (entro 2h):**\n• Proteine: 25-40g (leucina >3g)\n• Carboidrati: 30-60g (ripristino glicogeno)\n• Esempio: Whey + frutta, o pasto completo\n\n**3. STRESS MANAGEMENT:**\n• **Cortisolo elevato**: Catabolismo, ridotta recovery\n• **Strategie**: Meditazione, yoga, natura, hobby\n• **Sleep impact**: Stress cronico = qualità sonno compromessa\n• **Training**: Evitare volume eccessivo se stress alto\n\n**4. MARCATORI RECOVERY:**\n• **HRV (Heart Rate Variability)**: Indicatore autonomic recovery\n• **Resting HR**: Elevato = incomplete recovery\n• **Subjective wellness**: Energy, mood, motivation\n• **Performance**: Decline = necessità deload\n\n**5. STRATEGIE ACTIVE RECOVERY:**\n• Light cardio (walking, swimming)\n• Mobilità e stretching dinamico\n• Massage, foam rolling\n• Sauna (heat shock proteins, circulation)",
+    "metadata": {
+      "category": "training",
+      "subcategory": "recovery_optimization",
+      "checklist_ids": ["MG-015", "MG-016", "MG-017"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["recovery", "sleep_optimization", "peri_workout_nutrition", "stress_management", "HRV", "active_recovery"]
+    }
+  }
+]

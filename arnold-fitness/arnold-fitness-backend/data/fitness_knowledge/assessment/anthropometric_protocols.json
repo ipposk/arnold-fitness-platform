@@ -1,0 +1,50 @@
+[
+  {
+    "question": "Come eseguire misurazioni antropometriche accurate per BMI e circonferenze corporee?",
+    "answer": "PROTOCOLLO MISURAZIONE BMI:\n1. Peso: Misurazione a digiuno, mattina, senza scarpe, vestiti leggeri\n2. Altezza: Posizione eretta, piedi uniti, schiena dritta contro parete\n3. Calcolo BMI = peso(kg) / altezza²(m)\n\nCIRCONFERENZE STANDARDIZZATE (WHO/ISAK):\n• Vita: Punto più stretto tra coste e creste iliache\n• Fianchi: Massima circonferenza sui glutei\n• Collo: Sotto il pomo d'Adamo, mantenendo postura naturale\n• Braccia: Massima circonferenza bicipite rilassato\n• Coscia: Massima circonferenza coscia in piedi\n\nSTRUMENTI: Metro anthropometrico inestensibile, scala priva di errori (<0.1kg), stadiometro.",
+    "metadata": {
+      "category": "assessment",
+      "subcategory": "anthropometric",
+      "checklist_ids": ["ASS-001", "ASS-002", "ASS-003"],
+      "difficulty": "beginner",
+      "evidence_level": "high",
+      "tags": ["BMI", "circumferences", "WHO_protocol", "ISAK_standards", "measurement_accuracy"]
+    }
+  },
+  {
+    "question": "Metodi per stimare la percentuale di grasso corporeo e loro accuratezza?",
+    "answer": "METODI DISPONIBILI (in ordine di accuratezza):\n\n1. **DEXA (Gold Standard)**: ±1.5% errore\n   - Radiazione bassa, costo elevato, disponibilità limitata\n\n2. **BodPod (Pletismografia)**: ±2-4% errore\n   - Non invasivo, richiede calibrazione accurata\n\n3. **Bioimpedenza (BIA)**: ±3-5% errore\n   - Influenzata da idratazione, temperatura, ora del giorno\n   - Protocollo: 4h senza cibo/bevande, vescica vuota\n\n4. **Plicometria (7-siti)**: ±3-5% errore con operatore esperto\n   - Siti: tricipite, sottoscapolare, pettorale, ascellare, sovrailiaca, addominale, coscia\n   - Formule: Jackson-Pollock (uomini/donne)\n\n5. **Formule predittive (Navy, Army)**: ±4-6% errore\n   - Navy: vita, collo, altezza (uomini); + fianchi (donne)\n\nRACCOMANDAZIONE: Utilizzare stesso metodo per tracking progressi.",
+    "metadata": {
+      "category": "assessment",
+      "subcategory": "body_composition",
+      "checklist_ids": ["ASS-004"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["body_fat", "DEXA", "BIA", "skinfolds", "Navy_formula", "accuracy"]
+    }
+  },
+  {
+    "question": "Red flags medici durante assessment iniziale - quando referire a medico?",
+    "answer": "RED FLAGS CARDIOVASCOLARI:\n• Dolore/pressione toracica durante sforzo\n• Dispnea anomala a riposo o sforzi leggeri\n• Vertigini/sincope durante esercizio\n• Edema delle caviglie\n• Palpitazioni/tachicardia inspiegata\n• Murmuri cardiaci noti\n\nRED FLAGS METABOLICI:\n• Diabete non controllato (HbA1c >8%)\n• Ipertensione severa (>180/110 mmHg)\n• Ipoglicemie frequenti\n\nRED FLAGS MUSCOLO-SCHELETRICI:\n• Dolore acuto articolare/vertebrale\n• Limitazioni funzionali severe\n• Instabilità articolare\n• Infiammazioni attive\n\nALTRI RED FLAGS:\n• Gravidanza complicata\n• Disturbi alimentari attivi\n• Depressione severa non trattata\n\nAZIONE: Rimandare inizio programma fino a clearance medica. Documentare referral e seguire protocolli locali.",
+    "metadata": {
+      "category": "assessment",
+      "subcategory": "medical_screening",
+      "checklist_ids": ["ASS-005", "ASS-006", "ASS-007"],
+      "difficulty": "advanced",
+      "evidence_level": "high",
+      "tags": ["red_flags", "medical_clearance", "contraindications", "safety", "referral_criteria"]
+    }
+  },
+  {
+    "question": "Protocollo per assessment funzionale fitness di base?",
+    "answer": "ASSESSMENT FUNZIONALE STRUTTURATO:\n\n**1. CAPACITÀ CARDIOVASCOLARE:**\n• Test step 3-minuti (frequenza cardiaca recovery)\n• Cammino 6-minuti (distanza percorsa)\n• Rating of Perceived Exertion (scala Borg 1-10)\n\n**2. FORZA MUSCOLARE:**\n• Push-up test (massimo numero, forma corretta)\n• Plank test (durata massima mantenimento)\n• Squat test (30 secondi, conteggio ripetizioni)\n\n**3. FLESSIBILITÀ:**\n• Sit-and-reach test (flessibilità posteriore coscia)\n• Shoulder flexibility test (range movimento spalle)\n\n**4. EQUILIBRIO/STABILITÀ:**\n• Single-leg stance test (tempo mantenimento)\n• Overhead squat assessment (screening pattern movimento)\n\n**INTERPRETAZIONE:**\n- Confronto con norme per età/sesso\n- Identificazione limitazioni funzionali\n- Baseline per monitoraggio progressi\n- Adattamenti programma basati su risultati",
+    "metadata": {
+      "category": "assessment",
+      "subcategory": "functional_testing",
+      "checklist_ids": ["ASS-014", "ASS-015", "ASS-016"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["functional_assessment", "cardiovascular_test", "strength_test", "flexibility", "movement_screening"]
+    }
+  }
+]

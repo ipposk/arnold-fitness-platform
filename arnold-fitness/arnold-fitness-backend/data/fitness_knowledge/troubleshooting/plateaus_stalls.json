@@ -1,0 +1,38 @@
+[
+  {
+    "question": "Cliente non perde peso nonostante deficit calorico apparente - checklist troubleshooting?",
+    "answer": "TROUBLESHOOTING PLATEAU PESO SISTEMATICO:\n\n**1. VERIFICA ACCURATEZZA TRACKING:**\n• **Calorie intake**: Sottostima comune 20-40%\n• **Food logging**: Pesare alimenti crudi, oli, condimenti\n• **Liquid calories**: Bevande, alcol, supplementi\n• **Weekend effect**: Comportamenti diversi weekend vs settimana\n• **Tool check**: Bilancia alimentare calibrata, app aggiornate\n\n**2. ADATTAMENTI METABOLICI:**\n• **NEAT reduction**: Diminuzione attività spontanea\n• **TEF decrease**: Ridotto effetto termogenico cibo\n• **Adaptive thermogenesis**: Metabolismo rallenta 10-25%\n• **Timeline**: Significativo dopo 6-12 settimane deficit\n\n**3. RITENZIONE IDRICA MASCHERATA:**\n• **Stress/cortisolo**: Elevato stress = ritenzione\n• **Ciclo mestruale**: Fluttuazioni fino a 2-3kg\n• **Sodio intake**: Pasti processed aumentano ritenzione\n• **Training intenso**: Infiammazione muscolare + acqua\n• **Solution**: Tracking trend 2-4 settimane, non peso giornaliero\n\n**4. INTERVENTI GRADUALI:**\n**Step 1**: Rivedere tracking accuracy (3-7 giorni)\n**Step 2**: Ridurre calorie 10-15% (100-200 kcal)\n**Step 3**: Aumentare attività (2000-3000 passi extra)\n**Step 4**: Refeed strategici (1 giorno/settimana maintenance)\n**Step 5**: Full diet break (1-2 settimane maintenance)\n\n**5. QUANDO PREOCCUPARSI:**\n• >3 settimane senza cambiamenti peso/misure\n• Energia drasticamente ridotta\n• Performance allenamento compromessa\n• Problemi sonno/umore persistenti",
+    "metadata": {
+      "category": "troubleshooting",
+      "subcategory": "weight_loss_plateau",
+      "checklist_ids": ["WL-020", "WL-021", "WL-022"],
+      "difficulty": "advanced",
+      "evidence_level": "high",
+      "tags": ["plateau", "metabolic_adaptation", "water_retention", "tracking_accuracy", "NEAT", "diet_break"]
+    }
+  },
+  {
+    "question": "Stallo nei pesi/performance in palestra - strategie per superare plateau forza?",
+    "answer": "TROUBLESHOOTING PLATEAU PERFORMANCE:\n\n**1. ANALISI CAUSE COMUNI:**\n**Overtraining/Under-recovery:**\n• Volume eccessivo senza recovery adeguata\n• Sleep debt cumulativo (<7h/notte)\n• Stress cronico elevato (lavoro, personale)\n• Nutrition inadequate per volume training\n\n**Form/Technique Issues:**\n• Range of motion limitato progressivamente\n• Compensation patterns sviluppati\n• Setup inconsistente\n• Speed of lift troppo veloce/lenta\n\n**2. STRATEGIE IMMEDIATE:**\n**Deload Week (Settimana 1):**\n• Riduzione 40-50% volume mantenendo intensità\n• Focus on technique refinement\n• Extra mobility/recovery work\n• Sleep prioritization\n\n**Auto-Regulation (Settimane 2-4):**\n• RPE-based training vs fixed percentages\n• Adjust daily basato su readiness\n• Volume flexibility basato su recovery\n\n**3. VARIAZIONI PROGRAMMATICHE:**\n**Intensità Changes:**\n• Cluster sets (rest-pause)\n• Tempo manipulations (3-1-1-1)\n• Partial ranges of motion\n• Accommodating resistance (bands/chains)\n\n**Exercise Variations:**\n• Main lift deficit/paused variations\n• Unilateral alternatives\n• Different grip/stance widths\n• Accessory strengthening weakest links\n\n**4. PERIODIZATION RESET:**\n• Back-off to 85-90% previous max\n• Linear progression restart\n• New rep ranges/set schemes\n• Block periodization approach\n\n**5. ASSESSMENT RECOVERY:**\n• HRV tracking consistency\n• Sleep quality metrics\n• Subjective wellness questionnaire\n• Performance readiness daily check-in",
+    "metadata": {
+      "category": "troubleshooting",
+      "subcategory": "strength_plateau",
+      "checklist_ids": ["MG-025", "MG-026", "MG-027"],
+      "difficulty": "advanced",
+      "evidence_level": "high",
+      "tags": ["strength_plateau", "overtraining", "deload", "auto_regulation", "exercise_variations", "periodization"]
+    }
+  },
+  {
+    "question": "Perdita motivazione e aderenza al programma - strategie behavioral coaching?",
+    "answer": "TROUBLESHOOTING MOTIVAZIONE E ADERENZA:\n\n**1. IDENTIFICAZIONE ROOT CAUSES:**\n**Expectation vs Reality Gap:**\n• Risultati più lenti del previsto\n• Obiettivi non realistici temporalmente\n• Focus eccessivo outcome vs process\n• Comparison trap social media\n\n**Lifestyle Conflicts:**\n• Programma troppo ambizioso per schedule\n• All-or-nothing mentality\n• Perfezionismo paralizzante\n• Supporto sociale insufficiente\n\n**2. RESET MOTIVAZIONALE:**\n**Goal Reassessment:**\n• SMART goals revision\n• Process goals vs outcome goals\n• Shorter-term milestones (2-4 settimane)\n• Celebration small wins\n\n**Identity-Based Changes:**\n• \"I am someone who exercises\" vs \"I want to lose weight\"\n• Focus on becoming vs achieving\n• Habit stacking with existing routines\n• Environmental design per success\n\n**3. BEHAVIORAL INTERVENTIONS:**\n**Reduce Friction:**\n• Meal prep semplificato\n• Home workout options\n• Shorter sessions (15-30 min)\n• Equipment/clothes ready night before\n\n**Accountability Systems:**\n• Workout buddy/partner\n• Progress photos/measurements\n• Public commitment/sharing\n• Professional check-ins regolari\n\n**4. COGNITIVE REFRAMING:**\n• \"Missed one day\" vs \"Failed completely\"\n• Progress = learning, not linear improvement\n• Focus what you CAN control\n• Growth mindset vs fixed mindset\n\n**5. RESTART PROTOCOL:**\n**Week 1**: Minimal effective dose (3x20min)\n**Week 2-3**: Consistency over intensity\n**Week 4+**: Gradual complexity increase\n• Build momentum before adding challenges",
+    "metadata": {
+      "category": "troubleshooting",
+      "subcategory": "motivation_adherence",
+      "checklist_ids": ["ASS-020", "ASS-021", "ASS-022"],
+      "difficulty": "advanced",
+      "evidence_level": "high",
+      "tags": ["motivation_loss", "adherence", "behavioral_coaching", "goal_setting", "habit_formation", "identity_change"]
+    }
+  }
+]

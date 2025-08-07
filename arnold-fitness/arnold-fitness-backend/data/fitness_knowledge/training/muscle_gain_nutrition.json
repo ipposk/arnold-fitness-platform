@@ -1,0 +1,26 @@
+[
+  {
+    "question": "Surplus calorico ottimale per lean gains - evitare eccessivo accumulo grasso?",
+    "answer": "SURPLUS CALORICO STRATEGICO:\n\n**SURPLUS RACCOMANDATI:**\n• **Conservative**: 200-300 kcal/giorno (lean gains)\n• **Moderate**: 300-500 kcal/giorno (guadagno bilanciato)\n• **Aggressive**: 500+ kcal/giorno (mass gaining, più grasso)\n\n**TARGETING PER ESPERIENZA:**\n**Principianti** (0-1 anno):\n• Surplus: 300-500 kcal/giorno\n• Guadagno atteso: 0.5-1kg/mese (70% muscolo)\n• Neurological adaptations + muscle growth\n\n**Intermedi** (1-3 anni):\n• Surplus: 200-400 kcal/giorno\n• Guadagno atteso: 0.25-0.5kg/mese (60% muscolo)\n• Crescita più lenta, precisione maggiore\n\n**Avanzati** (3+ anni):\n• Surplus: 100-300 kcal/giorno\n• Guadagno atteso: 0.1-0.25kg/mese (50% muscolo)\n• Mini-cuts periodici per body recomposition\n\n**MONITORAGGIO SETTIMANALE:**\n• **Target rate**: 0.25-0.5% peso corporeo/settimana\n• **Red flags**: >1% peso/settimana (troppo veloce)\n• **Adjustments**: ±100-150 kcal basato su trend\n\n**BODY RECOMPOSITION:**\n• Alternanza phases: 8-12 settimane surplus, 4-6 settimane mini-cut\n• Mantenimento % grasso corporeo accettabile\n• Natural lifters: <15% uomini, <25% donne",
+    "metadata": {
+      "category": "training",
+      "subcategory": "caloric_surplus",
+      "checklist_ids": ["MG-001", "MG-002"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["caloric_surplus", "lean_gains", "body_recomposition", "muscle_gain_rate", "experience_levels"]
+    }
+  },
+  {
+    "question": "Apporto e timing proteico ottimale per sintesi proteica muscolare (MPS)?",
+    "answer": "PROTOCOLLO PROTEICO EVIDENCE-BASED:\n\n**APPORTO GIORNALIERO:**\n• **Base requirement**: 1.6g/kg peso corporeo\n• **Muscle building optimal**: 2.0-2.4g/kg\n• **Upper limit benefit**: ~2.5g/kg (no ulteriori vantaggi)\n• **Durante surplus**: Parte superiore del range\n\n**DISTRIBUZIONE OTTIMALE:**\n• **Per pasto**: 20-40g proteine di qualità\n• **Frequenza**: Ogni 3-5 ore durante giornata\n• **Leucine threshold**: 2.5-3g leucina per trigger MPS\n• **Esempio 80kg**: 4 pasti × 40g = 160g giornalieri\n\n**TIMING STRATEGICO:**\n**Pre-Workout (1-2h prima):**\n• 20-30g proteine + carboidrati\n• Aminoacidi disponibili durante training\n\n**Post-Workout (0-2h dopo):**\n• 25-40g proteine ad alto valore biologico\n• Leucina >3g per massimal MPS stimulation\n• Whey protein ideale per rapida digestione\n\n**Pre-Sleep:**\n• 20-40g caseina o proteine slow-digesting\n• Sustained amino acid release durante notte\n• Riduce catabolismo notturno\n\n**QUALITÀ PROTEICHE:**\n• **Complete proteins**: Tutti aminoacidi essenziali\n• **PDCAAS score**: Whey (1.0), uova (1.0), carne (0.9)\n• **Leucine content**: Whey > caseina > vegetali\n• **Digestibility**: Whey > uova > carne > vegetali",
+    "metadata": {
+      "category": "training",
+      "subcategory": "protein_optimization",
+      "checklist_ids": ["MG-003", "MG-004", "MG-005"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["protein_intake", "MPS", "leucine", "protein_timing", "amino_acids", "protein_quality"]
+    }
+  }
+]

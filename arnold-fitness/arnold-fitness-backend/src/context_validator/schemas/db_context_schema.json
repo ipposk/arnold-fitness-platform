@@ -1,0 +1,705 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yourdomain.com/schemas/context_schema.json",
+  "type": "object",
+  "title": "db_context Schema for Arnold Fitness Coaching Session",
+  "required": ["scope", "checklist", "current_phase_id", "goal", "findings", "evidence", "meta"],
+  "properties": {
+    "test_id": {
+      "type": "string",
+      "description": "Unique identifier for this fitness coaching session."
+    },
+    "pt_type": {
+      "type": "string", 
+      "description": "Type of fitness program (determines checklist template)."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Unique identifier for this fitness coaching session."
+    },
+    "fitness_type": {
+      "type": "string",
+      "description": "Type of fitness program (determines checklist template)."
+    },
+    "scope": {
+      "type": "object",
+      "required": ["targets"],
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "List of fitness goals or target areas for coaching."
+        },
+        "domain": {
+          "type": ["string", "null"],
+          "description": "Optional domain or primary scope indicator."
+        }
+      }
+    },
+    "credentials": {
+      "type": "object",
+      "description": "Secure storage for fitness data and user preferences.",
+      "additionalProperties": true
+    },
+    "checklist": {
+      "type": "array",
+      "description": "Hierarchical structured checklist for the fitness coaching program.",
+      "items": {
+        "type": "object",
+        "required": ["phase_id", "title", "tasks"],
+        "properties": {
+          "phase_id": {
+            "type": "string",
+            "description": "Unique identifier for the phase (e.g., info_gathering)."
+          },
+          "title": {
+            "type": "string",
+            "description": "Human-readable title of the phase."
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["task_id", "title", "checks"],
+              "properties": {
+                "task_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the task within a phase."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title of the subtask."
+                },
+                "checks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["check_id", "description", "state"],
+                    "properties": {
+                      "check_id": {
+                        "type": "string",
+                        "description": "Identifier of individual checklist item."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Clear, actionable description of the check item."
+                      },
+                      "state": {
+                        "type": "string",
+                        "enum": ["pending", "done", "failed", "skipped", "in_progress"],
+                        "description": "Current completion status of this checklist item."
+                      },
+                      "notes": {
+                        "type": ["string", "null"],
+                        "description": "Optional notes on this checklist item."
+                      },
+                      "timestamp": {
+                        "type": ["string", "null"],
+                        "format": "date-time",
+                        "description": "Optional timestamp of last state update."
+                      },
+                      "related_finding_ids": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "IDs referencing related findings or evidence.",
+                        "default": []
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "current_phase_id": {
+      "type": "string",
+      "description": "Reference to the current active phase ID."
+    },
+    "goal": {
+      "type": "string",
+      "description": "Current operational goal of the penetration test."
+    },
+    "findings": {
+      "type": "array",
+      "description": "Structured list of findings discovered during the penetration test.",
+      "items": {
+        "type": "object",
+        "required": ["finding_id", "title", "description", "severity"],
+        "properties": {
+          "finding_id": {
+            "type": "string",
+            "description": "Unique ID for this finding."
+          },
+          "title": {
+            "type": "string",
+            "description": "Concise description or summary of the finding."
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the issue identified."
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low", "info"],
+            "description": "Severity rating for the finding."
+          },
+          "recommendation": {
+            "type": ["string", "null"],
+            "description": "Recommended actions or remediation steps."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the finding was logged."
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Evidence collected during testing activities.",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "description"],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "description": {"type": "string"},
+          "type": {"type": "string", "enum": ["screenshot", "log", "output", "other"]},
+          "url": {"type": ["string", "null"]},
+          "timestamp": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "last_output": {
+      "type": "object",
+      "description": "Contenuto dell'ultimo output del ciclo precedente, da usare come retroazione.",
+      "properties": {
+        "guidance_markdown": {
+          "type": "string",
+          "description": "Output in formato markdown generato dall'LLM nel ciclo precedente."
+        },
+        "raw_guidance": {
+          "type": "object",
+          "description": "Output strutturato JSON prodotto da LLM con intro, suggested_actions e outro.",
+          "properties": {
+            "intro": { "type": "string" },
+            "suggested_actions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "task_id": { "type": "string" },
+                  "check_id": { "type": "string" },
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "description": { "type": "string" },
+                        "command": { "type": "string" }
+                      },
+                      "required": ["description", "command"]
+                    }
+                  }
+                },
+                "required": ["task_id", "check_id", "actions"]
+              }
+            },
+            "outro": { "type": "string" }
+          },
+          "required": ["intro", "suggested_actions", "outro"]
+        }
+      },
+      "required": ["guidance_markdown", "raw_guidance"]
+    },
+    "meta": {
+      "type": "object",
+      "required": ["timestamp", "updated_by", "source", "created_at", "updated_at", "version"],
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_by": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "fitness_profile": {
+      "type": "object",
+      "description": "Comprehensive fitness profile data collected during assessment",
+      "properties": {
+        "anthropometric_data": {
+          "type": "object",
+          "description": "Physical measurements and body composition data",
+          "properties": {
+            "current_weight": {
+              "type": ["number", "null"],
+              "description": "Current body weight in kg"
+            },
+            "weight_history": {
+              "type": "array",
+              "description": "Historical weight data for trend analysis",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {"type": "string", "format": "date"},
+                  "weight": {"type": "number"},
+                  "notes": {"type": ["string", "null"]}
+                },
+                "required": ["date", "weight"]
+              }
+            },
+            "height": {
+              "type": ["number", "null"],
+              "description": "Height in cm"
+            },
+            "bmi": {
+              "type": ["number", "null"],
+              "description": "Body Mass Index calculated value"
+            },
+            "body_fat_percentage": {
+              "type": ["number", "null"],
+              "description": "Body fat percentage (estimated or measured)"
+            },
+            "circumferences": {
+              "type": "object",
+              "description": "Body circumferences measurements in cm",
+              "properties": {
+                "waist": {"type": ["number", "null"]},
+                "hips": {"type": ["number", "null"]},
+                "neck": {"type": ["number", "null"]},
+                "arms": {"type": ["number", "null"]},
+                "chest": {"type": ["number", "null"]},
+                "thighs": {"type": ["number", "null"]}
+              }
+            }
+          }
+        },
+        "medical_history": {
+          "type": "object",
+          "description": "Medical background and health considerations",
+          "properties": {
+            "chronic_conditions": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "List of chronic medical conditions"
+            },
+            "medications": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Current medications and supplements"
+            },
+            "physical_limitations": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Physical limitations or restrictions"
+            },
+            "injury_history": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "injury": {"type": "string"},
+                  "date": {"type": ["string", "null"], "format": "date"},
+                  "status": {"type": "string", "enum": ["recovered", "ongoing", "chronic"]},
+                  "notes": {"type": ["string", "null"]}
+                }
+              },
+              "description": "History of injuries and their current status"
+            },
+            "allergies_intolerances": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Food allergies and intolerances"
+            }
+          }
+        },
+        "lifestyle_assessment": {
+          "type": "object",
+          "description": "Current lifestyle factors affecting fitness goals",
+          "properties": {
+            "current_activity_level": {
+              "type": ["string", "null"],
+              "enum": ["sedentary", "lightly_active", "moderately_active", "very_active", "extremely_active", null],
+              "description": "Current level of physical activity"
+            },
+            "exercise_history": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activity": {"type": "string"},
+                  "frequency": {"type": "string"},
+                  "duration": {"type": ["string", "null"]},
+                  "experience_level": {"type": "string", "enum": ["beginner", "intermediate", "advanced"]}
+                }
+              },
+              "description": "Previous exercise experience and preferences"
+            },
+            "sleep_patterns": {
+              "type": "object",
+              "properties": {
+                "average_hours": {"type": ["number", "null"]},
+                "quality_rating": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+                "sleep_issues": {"type": "array", "items": {"type": "string"}}
+              }
+            },
+            "stress_management": {
+              "type": "object",
+              "properties": {
+                "stress_level": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+                "stress_sources": {"type": "array", "items": {"type": "string"}},
+                "coping_strategies": {"type": "array", "items": {"type": "string"}}
+              }
+            },
+            "time_availability": {
+              "type": "object",
+              "properties": {
+                "hours_per_week": {"type": ["number", "null"]},
+                "preferred_workout_times": {"type": "array", "items": {"type": "string"}},
+                "schedule_flexibility": {"type": ["string", "null"], "enum": ["high", "medium", "low", null]}
+              }
+            },
+            "substance_use": {
+              "type": "object",
+              "properties": {
+                "alcohol_consumption": {"type": ["string", "null"]},
+                "smoking_status": {"type": ["string", "null"]},
+                "other_substances": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          }
+        },
+        "goals_and_motivation": {
+          "type": "object",
+          "description": "Fitness goals, timeline and motivational factors",
+          "properties": {
+            "primary_goal": {
+              "type": ["string", "null"],
+              "enum": ["weight_loss", "muscle_gain", "body_recomposition", "performance_improvement", "health_maintenance", "rehabilitation", null],
+              "description": "Main fitness objective"
+            },
+            "specific_targets": {
+              "type": "object",
+              "properties": {
+                "target_weight": {"type": ["number", "null"]},
+                "target_body_fat": {"type": ["number", "null"]},
+                "target_muscle_mass": {"type": ["number", "null"]},
+                "performance_goals": {"type": "array", "items": {"type": "string"}}
+              }
+            },
+            "timeline": {
+              "type": "object",
+              "properties": {
+                "desired_duration_weeks": {"type": ["integer", "null"]},
+                "milestones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {"type": "string"},
+                      "target_date": {"type": ["string", "null"], "format": "date"},
+                      "metric": {"type": ["string", "null"]}
+                    }
+                  }
+                }
+              }
+            },
+            "motivation_factors": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "What drives the client toward their goals"
+            },
+            "success_metrics": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "How the client defines success"
+            },
+            "potential_obstacles": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Identified barriers to goal achievement"
+            }
+          }
+        }
+      }
+    },
+    "nutrition_plan": {
+      "type": ["object", "null"],
+      "description": "Comprehensive nutrition planning and tracking",
+      "properties": {
+        "caloric_requirements": {
+          "type": "object",
+          "properties": {
+            "bmr": {"type": ["number", "null"], "description": "Basal Metabolic Rate in kcal/day"},
+            "tdee": {"type": ["number", "null"], "description": "Total Daily Energy Expenditure in kcal/day"},
+            "target_calories": {"type": ["number", "null"], "description": "Daily caloric target based on goals"},
+            "caloric_deficit_surplus": {"type": ["number", "null"], "description": "Planned deficit (-) or surplus (+) in kcal/day"}
+          }
+        },
+        "macronutrient_targets": {
+          "type": "object",
+          "properties": {
+            "protein_grams": {"type": ["number", "null"]},
+            "protein_percentage": {"type": ["number", "null"]},
+            "carbohydrate_grams": {"type": ["number", "null"]},
+            "carbohydrate_percentage": {"type": ["number", "null"]},
+            "fat_grams": {"type": ["number", "null"]},
+            "fat_percentage": {"type": ["number", "null"]},
+            "fiber_grams": {"type": ["number", "null"]}
+          }
+        },
+        "dietary_preferences": {
+          "type": "object",
+          "properties": {
+            "dietary_style": {
+              "type": ["string", "null"],
+              "enum": ["omnivore", "vegetarian", "vegan", "pescatarian", "keto", "paleo", "mediterranean", "other", null]
+            },
+            "food_allergies": {"type": "array", "items": {"type": "string"}},
+            "food_intolerances": {"type": "array", "items": {"type": "string"}},
+            "disliked_foods": {"type": "array", "items": {"type": "string"}},
+            "preferred_foods": {"type": "array", "items": {"type": "string"}},
+            "cultural_considerations": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "meal_structure": {
+          "type": "object",
+          "properties": {
+            "meals_per_day": {"type": ["integer", "null"]},
+            "snacks_per_day": {"type": ["integer", "null"]},
+            "meal_timing": {"type": "array", "items": {"type": "string"}},
+            "pre_post_workout_nutrition": {
+              "type": "object",
+              "properties": {
+                "pre_workout": {"type": ["string", "null"]},
+                "post_workout": {"type": ["string", "null"]},
+                "timing_guidelines": {"type": ["string", "null"]}
+              }
+            }
+          }
+        },
+        "hydration_plan": {
+          "type": "object",
+          "properties": {
+            "daily_water_target_liters": {"type": ["number", "null"]},
+            "electrolyte_needs": {"type": ["string", "null"]},
+            "hydration_schedule": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "supplements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "dosage": {"type": ["string", "null"]},
+              "timing": {"type": ["string", "null"]},
+              "purpose": {"type": ["string", "null"]},
+              "status": {"type": "string", "enum": ["recommended", "approved", "declined"]}
+            }
+          }
+        }
+      }
+    },
+    "training_plan": {
+      "type": ["object", "null"],
+      "description": "Structured exercise and training program",
+      "properties": {
+        "program_overview": {
+          "type": "object",
+          "properties": {
+            "program_type": {
+              "type": ["string", "null"],
+              "enum": ["strength_training", "cardio_focused", "hybrid", "sport_specific", "rehabilitation", "general_fitness", null]
+            },
+            "weekly_frequency": {"type": ["integer", "null"]},
+            "session_duration_minutes": {"type": ["integer", "null"]},
+            "training_split": {"type": ["string", "null"]},
+            "periodization": {"type": ["string", "null"]}
+          }
+        },
+        "exercise_preferences": {
+          "type": "object",
+          "properties": {
+            "preferred_activities": {"type": "array", "items": {"type": "string"}},
+            "disliked_activities": {"type": "array", "items": {"type": "string"}},
+            "equipment_available": {"type": "array", "items": {"type": "string"}},
+            "gym_access": {"type": ["boolean", "null"]},
+            "home_workout_preference": {"type": ["boolean", "null"]}
+          }
+        },
+        "current_fitness_level": {
+          "type": "object",
+          "properties": {
+            "cardiovascular_level": {"type": ["string", "null"], "enum": ["beginner", "intermediate", "advanced", null]},
+            "strength_level": {"type": ["string", "null"], "enum": ["beginner", "intermediate", "advanced", null]},
+            "flexibility_level": {"type": ["string", "null"], "enum": ["poor", "average", "good", "excellent", null]},
+            "balance_coordination": {"type": ["string", "null"], "enum": ["poor", "average", "good", "excellent", null]}
+          }
+        },
+        "exercise_modifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exercise": {"type": "string"},
+              "modification": {"type": "string"},
+              "reason": {"type": "string"}
+            }
+          }
+        },
+        "progression_plan": {
+          "type": "object",
+          "properties": {
+            "progression_method": {"type": ["string", "null"]},
+            "assessment_frequency": {"type": ["string", "null"]},
+            "progression_milestones": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "milestone": {"type": "string"},
+                  "target_date": {"type": ["string", "null"], "format": "date"},
+                  "measurement": {"type": ["string", "null"]}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "progress_tracking": {
+      "type": "object",
+      "description": "Comprehensive progress monitoring and data collection",
+      "properties": {
+        "body_measurements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {"type": "string", "format": "date"},
+              "weight": {"type": ["number", "null"]},
+              "body_fat_percentage": {"type": ["number", "null"]},
+              "circumferences": {
+                "type": "object",
+                "properties": {
+                  "waist": {"type": ["number", "null"]},
+                  "hips": {"type": ["number", "null"]},
+                  "chest": {"type": ["number", "null"]},
+                  "arms": {"type": ["number", "null"]},
+                  "thighs": {"type": ["number", "null"]}
+                }
+              },
+              "photos": {"type": "array", "items": {"type": "string"}},
+              "notes": {"type": ["string", "null"]}
+            },
+            "required": ["date"]
+          }
+        },
+        "performance_metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {"type": "string", "format": "date"},
+              "exercise": {"type": "string"},
+              "metric_type": {"type": "string", "enum": ["weight_lifted", "repetitions", "time", "distance", "heart_rate"]},
+              "value": {"type": "number"},
+              "unit": {"type": "string"},
+              "notes": {"type": ["string", "null"]}
+            },
+            "required": ["date", "exercise", "metric_type", "value"]
+          }
+        },
+        "adherence_tracking": {
+          "type": "object",
+          "properties": {
+            "nutrition_adherence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "week_start_date": {"type": "string", "format": "date"},
+                  "adherence_percentage": {"type": "number", "minimum": 0, "maximum": 100},
+                  "calories_target_vs_actual": {"type": ["number", "null"]},
+                  "missed_meals": {"type": "integer"},
+                  "notes": {"type": ["string", "null"]}
+                }
+              }
+            },
+            "training_adherence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "week_start_date": {"type": "string", "format": "date"},
+                  "sessions_planned": {"type": "integer"},
+                  "sessions_completed": {"type": "integer"},
+                  "adherence_percentage": {"type": "number", "minimum": 0, "maximum": 100},
+                  "missed_reasons": {"type": "array", "items": {"type": "string"}},
+                  "notes": {"type": ["string", "null"]}
+                }
+              }
+            }
+          }
+        },
+        "subjective_feedback": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {"type": "string", "format": "date"},
+              "energy_level": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "mood": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "motivation": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "hunger_satisfaction": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "workout_intensity": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "recovery_quality": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "sleep_quality": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "stress_level": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+              "comments": {"type": ["string", "null"]}
+            },
+            "required": ["date"]
+          }
+        },
+        "goal_progress": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "goal_id": {"type": "string"},
+              "goal_description": {"type": "string"},
+              "target_value": {"type": ["number", "null"]},
+              "current_value": {"type": ["number", "null"]},
+              "progress_percentage": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+              "target_date": {"type": ["string", "null"], "format": "date"},
+              "last_updated": {"type": "string", "format": "date"},
+              "status": {"type": "string", "enum": ["on_track", "ahead", "behind", "achieved", "modified", "abandoned"]}
+            },
+            "required": ["goal_id", "goal_description", "last_updated", "status"]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

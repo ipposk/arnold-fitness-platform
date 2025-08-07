@@ -1,0 +1,50 @@
+[
+  {
+    "question": "Come calcolare il BMR (Metabolismo Basale) utilizzando la formula Mifflin-St Jeor?",
+    "answer": "FORMULA MIFFLIN-ST JEOR (PIÙ ACCURATA):\n\n**UOMINI:**\nBMR = (10 × peso in kg) + (6.25 × altezza in cm) - (5 × età in anni) + 5\n\n**DONNE:**\nBMR = (10 × peso in kg) + (6.25 × altezza in cm) - (5 × età in anni) - 161\n\n**ESEMPIO PRATICO:**\nUomo 30 anni, 80kg, 180cm:\nBMR = (10 × 80) + (6.25 × 180) - (5 × 30) + 5\nBMR = 800 + 1125 - 150 + 5 = 1780 kcal/giorno\n\n**ALTERNATIVE (meno accurate):**\n• Harris-Benedict: Sovrastima ~5% (formula obsoleta)\n• Katch-McArdle: Richiede % grasso corporeo accurata\n• Cunningham: Per atleti con massa muscolare elevata\n\n**CONSIDERAZIONI:**\n• Formula valida per peso normale-sovrappeso\n• Sottostima in obesi severi\n• Variabilità individuale ±10-15%\n• Base per calcolo TDEE",
+    "metadata": {
+      "category": "nutrition",
+      "subcategory": "metabolic_calculations",
+      "checklist_ids": ["WL-001"],
+      "difficulty": "beginner",
+      "evidence_level": "high",
+      "tags": ["BMR", "Mifflin_St_Jeor", "metabolism", "calories", "baseline_calculation"]
+    }
+  },
+  {
+    "question": "Come determinare il TDEE (Total Daily Energy Expenditure) basato sul livello di attività?",
+    "answer": "FATTORI MOLTIPLICATORI TDEE:\n\n**SEDENTARIO (1.2):**\n• Lavoro scrivania, nessun esercizio regolare\n• <3000 passi/giorno\n• Solo attività quotidiane base\n\n**LEGGERMENTE ATTIVO (1.375):**\n• Esercizio leggero 1-3 giorni/settimana\n• 5000-7500 passi/giorno\n• Camminate occasionali\n\n**MODERATAMENTE ATTIVO (1.55):**\n• Esercizio moderato 3-5 giorni/settimana\n• 7500-10000 passi/giorno\n• Allenamenti strutturati regolari\n\n**MOLTO ATTIVO (1.725):**\n• Esercizio intenso 6-7 giorni/settimana\n• >10000 passi/giorno\n• Allenamento quotidiano + attività lavoro fisico\n\n**ESTREMAMENTE ATTIVO (1.9):**\n• Allenamenti multipli giornalieri\n• Lavoro fisico pesante\n• Atleti agonisti\n\n**CALCOLO:** TDEE = BMR × Fattore Attività\n**ESEMPIO:** BMR 1780 × 1.55 = 2759 kcal/giorno\n\n**MONITORAGGIO:** Adattare fattore basato su perdita peso effettiva nelle prime 2-3 settimane",
+    "metadata": {
+      "category": "nutrition",
+      "subcategory": "energy_expenditure",
+      "checklist_ids": ["WL-002"],
+      "difficulty": "beginner",
+      "evidence_level": "high",
+      "tags": ["TDEE", "activity_factor", "energy_expenditure", "lifestyle_assessment"]
+    }
+  },
+  {
+    "question": "Come stabilire un deficit calorico sicuro e sostenibile per la perdita peso?",
+    "answer": "PRINCIPI DEFICIT CALORICO SICURO:\n\n**DEFICIT RACCOMANDATI:**\n• **Conservativo**: 300-500 kcal/giorno (0.3-0.5kg/settimana)\n• **Moderato**: 500-750 kcal/giorno (0.5-0.7kg/settimana)\n• **Aggressivo**: 750-1000 kcal/giorno (0.7-1kg/settimana)\n\n**REGOLA DELL'1%:**\n• Mai superare 1% peso corporeo/settimana\n• Esempio: 80kg → max 0.8kg/settimana\n\n**LIMITI MINIMI SICUREZZA:**\n• Uomini: mai <1500 kcal/giorno\n• Donne: mai <1200 kcal/giorno\n• Eccezione: supervisione medica\n\n**STRATEGIA IMPLEMENTAZIONE:**\n• Settimana 1-2: Deficit moderato (500 kcal)\n• Valutazione aderenza e tolleranza\n• Adattamento basato su:\n  - Energia percepita\n  - Qualità sonno\n  - Performance allenamento\n  - Umore e stress\n\n**RED FLAGS:**\n• Perdita >1.5kg prima settimana (oltre acqua)\n• Spossatezza estrema\n• Performance drasticamente ridotta\n• Ciclo mestruale alterato (donne)",
+    "metadata": {
+      "category": "nutrition",
+      "subcategory": "deficit_planning",
+      "checklist_ids": ["WL-003", "WL-004"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["caloric_deficit", "safe_weight_loss", "sustainability", "monitoring", "red_flags"]
+    }
+  },
+  {
+    "question": "Distribuzione macronutrienti ottimale durante deficit calorico per preservare massa muscolare?",
+    "answer": "DISTRIBUZIONE MACRONUTRIENTI DEFICIT:\n\n**PROTEINE (1.6-2.2g/kg peso corporeo):**\n• **Sedentario**: 1.6g/kg (minimo preservazione muscolare)\n• **Attivo**: 1.8-2.0g/kg (allenamento regolare)\n• **Intenso**: 2.0-2.2g/kg (volume alto, deficit aggressivo)\n• **Priorità**: Leucina elevata, distribuzione durante giornata\n\n**GRASSI (20-35% calorie totali):**\n• **Minimo**: 0.8-1.0g/kg per funzioni ormonali\n• **Ottimale**: 1.0-1.5g/kg per sazietà\n• **Fonti**: Omega-3 (pesce, noci), monoinsaturi (olio oliva, avocado)\n\n**CARBOIDRATI (rimanente dopo proteine/grassi):**\n• **Timing**: Pre/post allenamento per performance\n• **Fonti**: Cereali integrali, frutta, verdure\n• **Minimo**: 100-150g/giorno per funzione cerebrale\n\n**ESEMPIO PRATICO (80kg, 2000 kcal deficit):**\n• Proteine: 144g (2.2×80) = 576 kcal (29%)\n• Grassi: 89g (1.1g/kg) = 800 kcal (40%)\n• Carboidrati: 156g = 624 kcal (31%)\n\n**ADATTAMENTI:**\n• Refeed days: aumentare carboidrati ogni 7-14 giorni\n• Diet breaks: 1-2 settimane maintenance ogni 6-12 settimane",
+    "metadata": {
+      "category": "nutrition",
+      "subcategory": "macronutrient_distribution",
+      "checklist_ids": ["WL-005", "WL-006", "WL-007"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["macronutrients", "protein_intake", "muscle_preservation", "nutrient_timing", "deficit_optimization"]
+    }
+  }
+]

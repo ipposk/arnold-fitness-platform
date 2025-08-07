@@ -1,0 +1,154 @@
+├── README.md
+├── descrizione-tecnica.md
+├── key.txt
+├── package-lock.json
+├── package.json
+├── punto_attuale.md
+├── rag-pentest/
+│   ├── rag-pentest-backend/
+│   │   ├── Scripts/
+│   │   │   ├── compare_retrieval.py
+│   │   │   ├── test_embedding.py
+│   │   ├── backend/
+│   │   │   ├── __init__.py
+│   │   │   ├── lambda_handlers.py
+│   │   ├── data/
+│   │   │   ├── checklists/
+│   │   │   │   ├── webapp_checklist.json
+│   │   ├── local/
+│   │   │   ├── db_manager_local.py
+│   │   │   ├── debug_paths.py
+│   │   │   ├── interactive_tester/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── core/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── config.py
+│   │   │   │   │   ├── logger.py
+│   │   │   │   │   ├── session.py
+│   │   │   │   ├── interactive_tester_old.py
+│   │   │   │   ├── main.py
+│   │   │   │   ├── steps/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── base.py
+│   │   │   │   │   ├── context_update.py
+│   │   │   │   │   ├── error_classification.py
+│   │   │   │   │   ├── query_generation.py
+│   │   │   │   │   ├── task_guidance.py
+│   │   │   │   ├── ui/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── colors.py
+│   │   │   │   │   ├── display.py
+│   │   │   │   │   ├── menu.py
+│   │   │   │   ├── utils/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── session_browser.py
+│   │   │   │   │   ├── troubleshooting.py
+│   │   │   ├── interactive_tester.py
+│   │   │   ├── local_main.py
+│   │   │   ├── test_aws_locally.py
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── requirements.txt
+│   │   ├── src/
+│   │   │   ├── __init__.py
+│   │   │   ├── context_utils/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── context_filters.py
+│   │   │   ├── context_validator/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── context_validator.py
+│   │   │   │   ├── schemas/
+│   │   │   │   │   ├── db_context_schema.json
+│   │   │   ├── db_context_manager/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── db_manager.py
+│   │   │   │   ├── dynamodb_storage.py
+│   │   │   │   ├── models.py
+│   │   │   │   ├── storage.py
+│   │   │   ├── db_pentesting_interface/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── retriever.py
+│   │   │   ├── llm_interfaces/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── clients/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── gemini_client.py
+│   │   │   │   ├── error_classifier_llm/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── error_classifier_llm.py
+│   │   │   │   │   ├── prompt_templates/
+│   │   │   │   │   │   ├── classify_error_detection.txt
+│   │   │   │   ├── query_generator_llm/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── prompt_templates/
+│   │   │   │   │   │   ├── query_generator.txt
+│   │   │   │   │   ├── query_generator_llm.py
+│   │   │   │   ├── task_guidance_llm/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── prompt_templates/
+│   │   │   │   │   │   ├── task_guidance.txt
+│   │   │   │   │   ├── task_guidance_llm.py
+│   │   │   │   ├── troubleshooting_llm/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── prompt_templates/
+│   │   │   │   │   │   ├── troubleshoot_command_issue.txt
+│   │   │   │   │   ├── troubleshooting_llm.py
+│   │   │   │   ├── user_input_interpreter_llm/
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── prompt_templates/
+│   │   │   │   │   │   ├── update_context_with_observation.txt
+│   │   │   │   │   ├── user_input_interpreter_llm.py
+│   │   │   ├── logger/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── config.py
+│   │   │   │   ├── logger.py
+│   │   │   ├── orchestrator/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── orchestrator.py
+│   │   │   │   ├── utils.py
+│   ├── rag-pentest-ui/
+│   │   ├── README.md
+│   │   ├── __init__.py
+│   │   ├── eslint.config.js
+│   │   ├── index.html
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── postcss.config.js
+│   │   ├── public/
+│   │   │   ├── favicon.png
+│   │   │   ├── vite.svg
+│   │   ├── src/
+│   │   │   ├── App.css
+│   │   │   ├── App.jsx
+│   │   │   ├── assets/
+│   │   │   │   ├── react.svg
+│   │   │   ├── aws-exports.js
+│   │   │   ├── components/
+│   │   │   │   ├── AppHeader.jsx
+│   │   │   │   ├── AuthGate.jsx
+│   │   │   │   ├── Chatpanel.jsx
+│   │   │   │   ├── ChecklistPanel.jsx
+│   │   │   │   ├── ClientModal.jsx
+│   │   │   │   ├── ClientSessionsView.jsx
+│   │   │   │   ├── ClientsView.jsx
+│   │   │   │   ├── ComingSoon.jsx
+│   │   │   │   ├── CreateSessionModal.jsx
+│   │   │   │   ├── CustomForgotPassword.jsx
+│   │   │   │   ├── CustomSignIn.jsx
+│   │   │   │   ├── CustomSignUp.jsx
+│   │   │   │   ├── DashboardView.jsx
+│   │   │   │   ├── MainSidebar.jsx
+│   │   │   │   ├── ReportsPanel.jsx
+│   │   │   ├── index.css
+│   │   │   ├── logo/
+│   │   │   │   ├── logo-int.png
+│   │   │   ├── main.jsx
+│   │   │   ├── services/
+│   │   │   │   ├── api.js
+│   │   │   ├── test.jsx
+│   │   │   ├── utils/
+│   │   │   │   ├── appUtils.js
+│   │   ├── tailwind.config.js
+│   │   ├── vite.config.js
+├── smart_tree.sh
+├── tree.txt

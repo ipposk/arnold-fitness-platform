@@ -1,0 +1,26 @@
+[
+  {
+    "question": "Strategie evidence-based per la formazione di abitudini fitness sostenibili?",
+    "answer": "FRAMEWORK SCIENTIFICO HABIT FORMATION:\n\n**1. HABIT LOOP (Charles Duhigg):**\n• **Cue**: Trigger ambientale specifico\n• **Routine**: Comportamento target\n• **Reward**: Rinforzo positivo immediato\n• **Repetition**: Consistenza nel tempo\n\n**APPLICAZIONE FITNESS:**\n**Cue Examples:**\n- Sveglia mattina → Vestiti workout ready\n- Pausa pranzo → Gym bag in macchina\n- Sera TV → Yoga mat sul pavimento\n\n**Routine Simplification:**\n- Start ridiculously small: 5 push-ups, 2 min walk\n- Focus consistency over intensity\n- Same time, same place\n\n**Reward Systems:**\n- Intrinsic: Endorphins, energy boost, pride\n- Extrinsic: Music preferita, smoothie post-workout\n- Social: Check-in con accountability buddy\n\n**2. IMPLEMENTATION INTENTIONS (Gollwitzer):**\n• **Formula**: \"Quando [situazione], farò [comportamento]\"\n• **Examples**: \n  - \"Quando suona sveglia 6:30, mi alzo e indosso scarpe da corsa\"\n  - \"Quando finisco pranzo, cammino 10 minuti\"\n  - \"Quando arrivo a casa, faccio 10 squat prima di sedermi\"\n\n**3. HABIT STACKING (James Clear):**\n• Link new habit a existing routine\n• **Formula**: \"Dopo [habit esistente], farò [nuovo habit]\"\n• **Examples**:\n  - \"Dopo che bevo caffè mattina, faccio 20 jumping jacks\"\n  - \"Dopo che parcheggio a lavoro, faccio 2 minuti stretching\"\n  - \"Dopo cena, preparo vestiti workout giorno dopo\"",
+    "metadata": {
+      "category": "behavioral",
+      "subcategory": "habit_formation",
+      "checklist_ids": ["ASS-019", "ASS-021"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["habit_formation", "habit_stacking", "implementation_intentions", "behavior_change", "consistency"]
+    }
+  },
+  {
+    "question": "Environmental design per supportare scelte fitness e nutrition salutari?",
+    "answer": "ENVIRONMENTAL DESIGN STRATEGICO:\n\n**1. PHYSICAL ENVIRONMENT MODIFICATIONS:**\n**Home Gym Setup:**\n• Equipment visibile e accessibile\n• Dedicated space (anche piccolo corner)\n• Remove barriers: vestiti ready, water bottle\n• Visual cues: mirror, motivational quotes, progress photos\n\n**Kitchen Organization:**\n• Healthy foods eye-level in frigo\n• Pre-cut vegetables front and center\n• Unhealthy snacks in opaque containers, top shelves\n• Meal prep containers ready e visibili\n• Water bottles in multiple locations\n\n**2. DIGITAL ENVIRONMENT:**\n**Phone/Apps:**\n• Fitness apps in home screen\n• Inspirational wallpaper\n• Notifications for workout times\n• Remove/hide distraction apps during workout hours\n\n**Social Media Curation:**\n• Follow fitness professionals, not fitness models\n• Educational content vs aesthetic content\n• Unfollow accounts causing comparison/demotivation\n• Join supportive fitness communities\n\n**3. TIME ENVIRONMENT:**\n**Schedule Architecture:**\n• Block calendar per workout times\n• Treat as unmovable appointments\n• Buffer time pre/post per transition\n• Batch similar activities (meal prep Sunday)\n\n**4. SOCIAL ENVIRONMENT:**\n**Supportive Network:**\n• Communicate goals a famiglia/friends\n• Find workout partner o accountability buddy\n• Join fitness groups/classes\n• Professional support (trainer, nutritionist)\n\n**Remove Negative Influences:**\n• Limit time con persone sabotaging efforts\n• Set boundaries around food pushers\n• Create scripts per social situations\n\n**5. COGNITIVE ENVIRONMENT:**\n• Replace \"I have to\" con \"I get to\"\n• Focus progress vs perfection\n• Prepare mental strategies per setbacks\n• Regular review goals and why important",
+    "metadata": {
+      "category": "behavioral",
+      "subcategory": "environmental_design",
+      "checklist_ids": ["ASS-021", "WL-009", "MG-017"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["environmental_design", "behavior_modification", "supportive_environment", "habit_cues", "social_support"]
+    }
+  }
+]

@@ -1,0 +1,29 @@
+Sei Arnold, un assistente esperto di fitness coaching e trasformazione corporea.
+
+Dato il seguente contesto fitness (filtrato per includere solo i task e i check attualmente **in_progress** di una sessione di coaching), genera una **query semantica fitness, concisa ed efficace** da utilizzare in un sistema di retrieval semantico (es. motore RAG con database vettoriale).
+
+Obiettivo:
+- Recuperare documentazione scientifica, protocolli evidence-based e metodologie fitness correlate alle attivita' attualmente in corso.
+- Massimizzare la pertinenza semantica della query, includendo **tecniche specifiche**, **metodologie validate**, **azioni pratiche** e **aspetti fisiologici espliciti**.
+
+Regole per la query:
+- Deve essere una stringa compatta di **keyword fitness separate da spazi**, non frasi.
+- Includi solo termini pertinenti al contesto fornito: metodologie, tecniche, fasi, obiettivi dei check fitness.
+- **Evita completamente linguaggio naturale, frasi descrittive o parole generiche**.
+- La query deve riflettere le attivita' fitness attualmente in corso (es. "anthropometric assessment", "BMI calculation", "body composition", "caloric deficit", "muscle hypertrophy", "TDEE calculation", "strength training").
+- Se utile, deduci termini impliciti dalla descrizione dei check (es. "bioimpedance analysis" da "percentuale grasso corporeo").
+
+Formato output JSON richiesto:
+{
+  "query_text": "elenco di keyword fitness specifiche, separate da spazi",
+  "filters": {
+    "methods": ["anthropometry", "body_composition"],
+    "tags": ["assessment", "weight_loss", "muscle_gain", "nutrition"],
+    "phase": ["Initial Assessment", "Planning", "Implementation", "Monitoring"]
+  }
+}
+
+Contesto:
+{filtered_context}
+
+Restituisci solo JSON valido, senza testo esterno.

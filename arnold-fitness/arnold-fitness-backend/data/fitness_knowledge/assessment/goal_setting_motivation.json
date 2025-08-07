@@ -1,0 +1,26 @@
+[
+  {
+    "question": "Come stabilire obiettivi SMART realistici e sostenibili per il fitness?",
+    "answer": "FRAMEWORK OBIETTIVI SMART APPLICATO AL FITNESS:\n\n**SPECIFIC (Specifico):**\n• Non: 'Perdere peso' → Sì: 'Perdere 8kg di grasso mantenendo massa muscolare'\n• Non: 'Essere più forte' → Sì: 'Aumentare squat da 60kg a 80kg'\n\n**MEASURABLE (Misurabile):**\n• Metriche oggettive: peso, circonferenze, performance\n• Frequenza misurazioni: settimanale peso, mensile circonferenze\n• Fotografie progress same lighting/posizione\n\n**ACHIEVABLE (Raggiungibile):**\n• Perdita peso: 0.5-1kg/settimana (max 1% peso corporeo)\n• Guadagno muscolare: 0.25-0.5kg/mese principianti\n• Forza: 2.5-5kg incremento mensile su lifts principali\n\n**RELEVANT (Rilevante):**\n• Allineamento con stile di vita/priorità\n• Considerazione limitazioni tempo/risorse\n• Motivazioni intrinseche vs estrinseche\n\n**TIME-BOUND (Temporizzato):**\n• Milestone intermedi: obiettivi 4-6 settimane\n• Goal principale: 3-6 mesi\n• Revisione/adattamento ogni 4 settimane",
+    "metadata": {
+      "category": "assessment",
+      "subcategory": "goal_setting",
+      "checklist_ids": ["ASS-017", "ASS-018"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["SMART_goals", "realistic_expectations", "timeline", "motivation", "adherence"]
+    }
+  },
+  {
+    "question": "Tecniche per assessment motivazionale e identificazione barriere comportamentali?",
+    "answer": "ASSESSMENT MOTIVAZIONALE STRUTTURATO:\n\n**1. STAGES OF CHANGE (Prochaska):**\n• Precontemplation: Non consapevole necessità cambiamento\n• Contemplation: Consapevole ma ambivalente\n• Preparation: Pronto ad agire entro 30 giorni\n• Action: Cambiamento comportamentale attivo <6 mesi\n• Maintenance: Mantenimento comportamento >6 mesi\n\n**2. SELF-DETERMINATION THEORY:**\n• **Autonomy**: Controllo percepito su scelte/decisioni\n• **Competence**: Fiducia capacità raggiungimento obiettivi\n• **Relatedness**: Supporto sociale e senso appartenenza\n\n**3. IDENTIFICAZIONE BARRIERE:**\n**Barriere Pratiche:**\n- Tempo limitato, costi, accesso strutture\n**Barriere Psicologiche:**\n- Paura giudizio, perfezionismo, ansia performance\n**Barriere Sociali:**\n- Mancanza supporto, pressioni familiari/lavorative\n\n**4. STRATEGIE MOTIVAZIONALI:**\n• Motivational Interviewing: Domande aperte, ascolto riflessivo\n• Identificazione valori profondi collegati al fitness\n• Celebrazione piccoli successi e progressi incrementali",
+    "metadata": {
+      "category": "assessment",
+      "subcategory": "motivation_barriers",
+      "checklist_ids": ["ASS-019", "ASS-020", "ASS-021"],
+      "difficulty": "advanced",
+      "evidence_level": "high",
+      "tags": ["motivation_assessment", "barriers_identification", "stages_of_change", "self_determination", "behavioral_change"]
+    }
+  }
+]

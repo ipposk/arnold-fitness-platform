@@ -1,0 +1,498 @@
+service: arnold-fitness-backend
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  stage: dev
+  runtime: python3.11
+  region: eu-west-1
+  httpApi:
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedHeaders:
+        - '*'
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+  environment:
+    DYNAMODB_TABLE_NAME: ArnoldSessions
+    GEMINI_API_KEY: ${env:GEMINI_API_KEY}
+    QDRANT_URL: ${env:QDRANT_URL}
+    QDRANT_API_KEY: ${env:QDRANT_API_KEY}
+    QDRANT_COLLECTION: arnold_fitness_chunks
+    SCHEMA_FILE_PATH_HANDLER: src/context_validator/schemas/db_context_schema.json
+    CHECKLISTS_BASE_PATH_HANDLER: data/checklists
+    SESSIONS_BASE_PATH_READONLY_HANDLER: data/sessions
+    INTERPRETER_PROMPTS_DIR_HANDLER: src/llm_interfaces/user_input_interpreter_llm/prompt_templates
+    GENERATOR_PROMPTS_DIR_HANDLER: src/llm_interfaces/query_generator_llm/prompt_templates
+    TASK_GUIDANCE_PROMPT_PATH_HANDLER: src/llm_interfaces/task_guidance_llm/prompt_templates/task_guidance.txt
+    ERROR_CLASSIFIER_PROMPT_PATH_HANDLER: src/llm_interfaces/error_classifier_llm/prompt_templates/classify_error_detection.txt
+    TROUBLESHOOTER_PROMPT_PATH_HANDLER: src/llm_interfaces/troubleshooting_llm/prompt_templates/troubleshoot_command_issue.txt
+    CHECKLIST_BUCKET_NAME: serverless-framework-deployments-eu-west-1-0944404d-92d2
+    DYNAMODB_VERSIONS_TABLE_NAME: ArnoldSessionVersions
+    DYNAMODB_CLIENTS_TABLE_NAME: ArnoldClients
+    DYNAMODB_ORGANIZATIONS_TABLE: Organizations
+    DYNAMODB_ORG_MEMBERS_TABLE: OrganizationMembers
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::serverless-framework-deployments-eu-west-1-0944404d-92d2/checklists/*
+
+        # Permessi per tabella PentestSessions (sessioni principali)
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
+            - dynamodb:BatchGetItem
+          Resource:
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldSessions
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldSessions/index/*
+
+        # Permessi per tabella ArnoldClients
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
+          Resource:
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldClients
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldClients/index/*
+
+        # Permessi per tabella ArnoldMessages (chat/messaggi)
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
+            - dynamodb:BatchGetItem
+          Resource:
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldMessages
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldMessages/index/*
+
+        # Permessi per tabella ArnoldSessionVersions (versioni/backup)
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
+            - dynamodb:BatchGetItem
+          Resource:
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldSessionVersions
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/ArnoldSessionVersions/index/*
+
+# Permessi per tabella Organizations
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/Organizations
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/Organizations/index/*
+
+        # Permessi per tabella OrganizationMembers
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/OrganizationMembers
+            - arn:aws:dynamodb:eu-west-1:045647126440:table/OrganizationMembers/index/*
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    slim: true
+    useStaticCache: false
+    useDownloadCache: false
+
+functions:
+  createSession:
+    handler: backend/lambda_handlers.create_session_handler
+    events:
+      - http:
+          path: session
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  deleteSession:
+    handler: backend/lambda_handlers.delete_session_handler
+    timeout: 30
+    events:
+      - http:
+          path: /session/{test_id}
+          method: delete
+          cors: true
+
+  getSessionDeletionPreview:
+    handler: backend/lambda_handlers.get_session_deletion_preview_handler
+    events:
+      - http:
+          path: /session/{test_id}/deletion-preview
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  addMessage:
+    handler: backend/lambda_handlers.add_message_handler
+    events:
+      - http:
+          path: /session/{test_id}/messages
+          method: post
+          cors: true
+
+  createClient:
+    handler: backend/lambda_handlers.create_client_handler
+    events:
+      - http:
+          path: /clients
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  getClients:
+    handler: backend/lambda_handlers.get_clients_handler
+    events:
+      - http:
+          path: /clients
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  updateClient:
+    handler: backend/lambda_handlers.update_client_handler
+    events:
+      - http:
+          path: /clients/{client_id}
+          method: patch
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  deleteClient:
+    handler: backend/lambda_handlers.delete_client_handler
+    events:
+      - http:
+          path: /clients/{client_id}
+          method: delete
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  listMessages:
+    handler: backend/lambda_handlers.list_messages_handler
+    events:
+      - http:
+          path: /session/{test_id}/messages
+          method: get
+          cors: true
+
+  getSessionContext:
+    handler: backend/lambda_handlers.get_session_context_handler
+    events:
+      - http:
+          path: session/{test_id}
+          method: get
+          cors: true
+
+  processChatMessage:
+    handler: backend/lambda_handlers.process_chat_message_handler
+    timeout: 60
+    events:
+      - http:
+          path: session/{test_id}/chat
+          method: post
+          cors: true
+
+  updateChecklist:
+    handler: backend/lambda_handlers.update_checklist_handler
+    events:
+      - http:
+          path: session/{test_id}/checklist
+          method: patch
+          cors: true
+
+  updateSessionName:
+    handler: backend/lambda_handlers.update_session_name_handler
+    events:
+      - http:
+          path: session/{test_id}
+          method: patch
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  getUserSessions:
+    handler: backend/lambda_handlers.get_sessions_by_user_handler
+    events:
+      - http:
+          path: sessions
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+  getAllSessions:
+    handler: backend/lambda_handlers.get_all_sessions_handler
+    events:
+      - http:
+          path: /sessions/all
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+  reassignSession:
+    handler: backend/lambda_handlers.reassign_session_handler
+    events:
+      - http:
+          path: /session/{test_id}/reassign
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:045647126440:userpool/eu-west-1_usoWvBirJ
+
+package:
+  include:
+    - src/**
+    - backend/**
+    - data/**
+    - requirements.txt
+  exclude:
+    - tests/**
+    - Scripts/**
+    - .git/**
+    - node_modules/**
+    - .venv/**
+    - venv/**
+    - env/**
+    - qdrant_storage/**
+    - config/**
+    - rag-pentest-ui/**
+    - "**/*.pyc"
+    - "**/*.egg-info"
+    - "**/__pycache__/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - vendor/**
+    - googleapiclient/samples/**
+    - googleapiclient/discovery_cache/**
+
+resources:
+  Resources:
+    ArnoldSessionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ArnoldSessions
+        AttributeDefinitions:
+          - AttributeName: test_id
+            AttributeType: S
+          - AttributeName: org_id
+            AttributeType: S
+          - AttributeName: assigned_to
+            AttributeType: S
+          - AttributeName: created_at
+            AttributeType: S
+          # ⭐ AGGIUNTA CRITICA: AttributeDefinition per user_email
+          - AttributeName: user_email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: test_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: org_id-index
+            KeySchema:
+              - AttributeName: org_id
+                KeyType: HASH
+              - AttributeName: created_at
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: assigned_to-index
+            KeySchema:
+              - AttributeName: assigned_to
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          # ⭐ AGGIUNTA CRITICA: GSI per user_email
+          - IndexName: user_email-index
+            KeySchema:
+              - AttributeName: user_email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+    ArnoldSessionVersionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ArnoldSessionVersions
+        AttributeDefinitions:
+          - AttributeName: test_id
+            AttributeType: S
+          - AttributeName: version
+            AttributeType: N
+        KeySchema:
+          - AttributeName: test_id
+            KeyType: HASH
+          - AttributeName: version
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+    ArnoldMessagesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ArnoldMessages
+        AttributeDefinitions:
+          - AttributeName: test_id
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: S
+        KeySchema:
+          - AttributeName: test_id
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+    ArnoldClientsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ArnoldClients
+        AttributeDefinitions:
+          - AttributeName: client_id
+            AttributeType: S
+          - AttributeName: owner_user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: client_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: owner_user_id-index
+            KeySchema:
+              - AttributeName: owner_user_id
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+    OrganizationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Organizations
+        AttributeDefinitions:
+          - AttributeName: org_id
+            AttributeType: S
+          - AttributeName: created_by
+            AttributeType: S
+        KeySchema:
+          - AttributeName: org_id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: created_by-index
+            KeySchema:
+              - AttributeName: created_by
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+    OrganizationMembersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: OrganizationMembers
+        AttributeDefinitions:
+          - AttributeName: org_id
+            AttributeType: S
+          - AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: org_id
+            KeyType: HASH
+          - AttributeName: user_id
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: user_id-index
+            KeySchema:
+              - AttributeName: user_id
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+    GetAllSessionsLogGroup:
+      Type: AWS::Logs::LogGroup
+      DeletionPolicy: Delete
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-getAllSessions
+        RetentionInDays: 14
+
+    DeleteSessionLogGroup:
+      Type: AWS::Logs::LogGroup
+      DeletionPolicy: Delete
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-deleteSession
+        RetentionInDays: 14
+
+    ProcessChatMessageLogGroup:
+      Type: AWS::Logs::LogGroup
+      DeletionPolicy: Delete
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-processChatMessage
+        RetentionInDays: 14
+
+    CreateNewSessionLogGroup:
+      Type: AWS::Logs::LogGroup
+      DeletionPolicy: Delete
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-createNewSession
+        RetentionInDays: 14
+
+    GetSingleSessionLogGroup:
+      Type: AWS::Logs::LogGroup
+      DeletionPolicy: Delete
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-getSingleSession
+        RetentionInDays: 14

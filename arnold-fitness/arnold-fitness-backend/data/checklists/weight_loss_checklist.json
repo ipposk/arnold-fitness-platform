@@ -1,0 +1,222 @@
+[
+  {
+    "phase_id": "WL",
+    "title": "Weight Loss Program",
+    "tasks": [
+      {
+        "task_id": "WL-caloric_planning",
+        "title": "Pianificazione Calorica",
+        "checks": [
+          {
+            "check_id": "WL-001",
+            "description": "Calcolo del metabolismo basale (BMR) utilizzando formula Mifflin-St Jeor",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-002",
+            "description": "Determinazione del Total Daily Energy Expenditure (TDEE) basato su livello di attività",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-003",
+            "description": "Stabilire deficit calorico target (300-500 kcal/giorno per perdita sostenibile)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-004",
+            "description": "Definire apporto calorico giornaliero target personalizzato",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "WL-nutritional_strategy",
+        "title": "Strategia Nutrizionale",
+        "checks": [
+          {
+            "check_id": "WL-005",
+            "description": "Distribuzione macronutrienti ottimale (proteine 1.6-2.2g/kg, grassi 20-35%, carboidrati resto)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-006",
+            "description": "Piano pasti strutturato con orari e porzioni definite",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-007",
+            "description": "Selezione alimenti ad alta sazietà e bassa densità calorica",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-008",
+            "description": "Strategia idratazione (minimo 2-3L acqua/giorno)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-009",
+            "description": "Gestione giorni di 'refeed' o 'cheat meals' controllati",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "WL-exercise_program",
+        "title": "Programma di Allenamento",
+        "checks": [
+          {
+            "check_id": "WL-010",
+            "description": "Programma resistance training 3-4x settimana per preservare massa muscolare",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-011",
+            "description": "Cardio strategico 3-5x settimana (LISS e/o HIIT)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-012",
+            "description": "Aumentare NEAT (Non-Exercise Activity Thermogenesis) - passi giornalieri, movimento spontaneo",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-013",
+            "description": "Periodizzazione allenamento per evitare plateau e adattamenti metabolici",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "WL-monitoring_tracking",
+        "title": "Monitoraggio e Tracking",
+        "checks": [
+          {
+            "check_id": "WL-014",
+            "description": "Pesate settimanali consistenti (stesso giorno, stessa ora, stesse condizioni)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-015",
+            "description": "Foto progress mensili (stesse pose, stessa illuminazione)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-016",
+            "description": "Misurazioni circonferenze bi-settimanali",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-017",
+            "description": "Tracking alimentare accurato tramite app o diario (almeno prime 4 settimane)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-018",
+            "description": "Monitoraggio energia, umore e qualità del sonno",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "WL-adaptation_troubleshooting",
+        "title": "Adattamenti e Troubleshooting",
+        "checks": [
+          {
+            "check_id": "WL-019",
+            "description": "Protocollo per gestire plateau di peso (>2 settimane senza perdita)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-020",
+            "description": "Strategia per gestire fame eccessiva o cravings",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-021",
+            "description": "Gestione situazioni sociali e pasti fuori",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-022",
+            "description": "Prevenzione perdita massa muscolare (adeguato intake proteico + allenamento)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "WL-023",
+            "description": "Piano transizione a mantenimento al raggiungimento obiettivo",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      }
+    ]
+  }
+]

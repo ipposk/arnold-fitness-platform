@@ -1,0 +1,276 @@
+[
+  {
+    "phase_id": "MG",
+    "title": "Muscle Gain Program",
+    "tasks": [
+      {
+        "task_id": "MG-caloric_surplus",
+        "title": "Surplus Calorico e Nutrizione",
+        "checks": [
+          {
+            "check_id": "MG-001",
+            "description": "Calcolo TDEE accurato per stabilire fabbisogno calorico di mantenimento",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-002",
+            "description": "Stabilire surplus calorico moderato (200-500 kcal/giorno per lean gains)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-003",
+            "description": "Apporto proteico ottimizzato (2.0-2.4g/kg di peso corporeo)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-004",
+            "description": "Distribuzione proteine nell'arco della giornata (20-40g per pasto)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-005",
+            "description": "Timing peri-workout (proteine e carboidrati pre/post allenamento)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "MG-resistance_training",
+        "title": "Allenamento Resistance",
+        "checks": [
+          {
+            "check_id": "MG-006",
+            "description": "Programma full-body o split 4-6x settimana con focus compound movements",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-007",
+            "description": "Volume settimanale ottimale per gruppo muscolare (10-20 sets per muscle group)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-008",
+            "description": "Range rep ottimale per ipertrofia (6-15 rep per set)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-009",
+            "description": "Progressive overload sistematico (aumento peso/rep/set progressivo)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-010",
+            "description": "Tempo sotto tensione controllato (2-4 secondi eccentrica)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-011",
+            "description": "Esercizi multiarticolari prioritari (squat, deadlift, bench press, overhead press)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "MG-recovery_optimization",
+        "title": "Ottimizzazione Recupero",
+        "checks": [
+          {
+            "check_id": "MG-012",
+            "description": "Sonno ottimale (7-9 ore per notte) per massimizzare sintesi proteica",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-013",
+            "description": "Giorni di riposo attivo tra sessioni intensive",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-014",
+            "description": "Gestione stress per ottimizzare ambiente anabolico",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-015",
+            "description": "Idratazione adeguata (35-40ml/kg di peso corporeo)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-016",
+            "description": "Tecniche di recovery attivo (stretching, foam rolling, mobility)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "MG-periodization",
+        "title": "Periodizzazione e Programmazione",
+        "checks": [
+          {
+            "check_id": "MG-017",
+            "description": "Mesocicli di 4-6 settimane con progressive overload",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-018",
+            "description": "Deload weeks pianificate ogni 4-6 settimane (riduzione volume 40-50%)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-019",
+            "description": "Variazione esercizi e stimoli per prevenire adattamento",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-020",
+            "description": "Specializzazione muscoli carenti con volume aggiuntivo",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "MG-monitoring_assessment",
+        "title": "Monitoraggio e Valutazione",
+        "checks": [
+          {
+            "check_id": "MG-021",
+            "description": "Tracking peso settimanale (aumento 0.2-0.5kg/settimana)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-022",
+            "description": "Misurazioni circonferenze bi-settimanali (braccia, petto, cosce)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-023",
+            "description": "Foto progress mensili per valutare composizione corporea",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-024",
+            "description": "Tracking prestazioni allenamento (carichi, rep, volume)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-025",
+            "description": "Valutazione periodica composizione corporea (BodPod, DEXA, BIA)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "MG-supplementation",
+        "title": "Supplementazione (Opzionale)",
+        "checks": [
+          {
+            "check_id": "MG-026",
+            "description": "Creatina monoidrato (3-5g/giorno) per forza e potenza",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-027",
+            "description": "Proteine whey post-workout se insufficient intake da cibo",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-028",
+            "description": "Vitamina D se carenza (supporto testosterone e recovery)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "MG-029",
+            "description": "Multivitaminico se dieta non copre tutti micronutrienti",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      }
+    ]
+  }
+]

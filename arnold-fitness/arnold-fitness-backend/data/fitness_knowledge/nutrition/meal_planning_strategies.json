@@ -1,0 +1,26 @@
+[
+  {
+    "question": "Strategie per meal planning e meal prep per sostenere deficit calorico?",
+    "answer": "MEAL PLANNING STRATEGICO PER DEFICIT:\n\n**1. STRUTTURA PASTI BASE:**\n• **Colazione**: Proteine + grassi per sazietà (30-40% calorie giornaliere)\n• **Pranzo**: Bilanciato con verdure voluminose (25-30%)\n• **Cena**: Leggero, proteine magre + verdure (20-25%)\n• **Snack**: Se necessari, ricchi proteine (10-15%)\n\n**2. MEAL PREP DOMENICALE:**\n**Proteine (batch cooking):**\n- Pollo grigliato a dadini\n- Legumi cotti (lenticchie, ceci)\n- Uova sode\n- Pesce al vapore\n\n**Carboidrati preparati:**\n- Riso integrale, quinoa\n- Patate dolci al forno\n- Avena overnight\n\n**Verdure pronte:**\n- Mix verdure grigliate\n- Insalate pre-lavate\n- Verdure tagliate per snack\n\n**3. STRATEGIE SAZIETÀ:**\n• **Volume**: Verdure a bassa densità calorica\n• **Fibra**: 25-35g/giorno per rallentare digestione\n• **Proteine**: Effetto termogenico + sazietà\n• **Idratazione**: 500ml acqua prima pasti principali\n\n**4. TOOLS PRATICI:**\n• App tracking: MyFitnessPal, Cronometer\n• Bilancia alimentare (precisione porzioni)\n• Contenitori meal prep standardizzati\n• Liste spesa pre-pianificate",
+    "metadata": {
+      "category": "nutrition",
+      "subcategory": "meal_planning",
+      "checklist_ids": ["WL-008", "WL-009", "WL-010"],
+      "difficulty": "beginner",
+      "evidence_level": "high",
+      "tags": ["meal_prep", "meal_planning", "satiety_strategies", "batch_cooking", "food_tracking"]
+    }
+  },
+  {
+    "question": "Gestione fame e cravings durante deficit calorico - strategie comportamentali?",
+    "answer": "GESTIONE FAME E CRAVINGS:\n\n**1. DISTINZIONE FAME FISICA vs EMOTIVA:**\n**Fame Fisica:**\n- Graduale, stomaco vuoto\n- Accetta cibi diversi\n- Si ferma a sazietà\n\n**Fame Emotiva:**\n- Improvvisa, specifica per cibi\n- Triggered da emozioni/situazioni\n- Difficile da soddisfare\n\n**2. STRATEGIE ANTI-FAME:**\n**Nutrizionali:**\n• Proteine ogni pasto (20-30g)\n• Verdure voluminose ad ogni pasto\n• Timing carboidrati: post-allenamento\n• Grassi sani per rallentare svuotamento gastrico\n\n**Comportamentali:**\n• **Mindful eating**: Masticazione lenta, concentrazione\n• **Distraction**: Attività alternative quando craving\n• **Hydration**: Spesso sete mascherata da fame\n• **Sleep**: 7-9h per regolare leptina/grelina\n\n**3. GESTIONE CRAVINGS SPECIFICI:**\n**Dolce:** Frutta, yogurt greco + cannella, cioccolato fondente 85%\n**Salato:** Verdure con hummus, popcorn senza olio\n**Cremoso:** Avocado, yogurt proteico, frullati proteici\n\n**4. STRATEGIE EMERGENZA:**\n• Bere 500ml acqua e aspettare 20 minuti\n• Fare 10 minuti camminata\n• Calling support person/accountability buddy\n• Revisione obiettivi e motivazioni personali",
+    "metadata": {
+      "category": "nutrition",
+      "subcategory": "hunger_management",
+      "checklist_ids": ["WL-011", "WL-012", "WL-013"],
+      "difficulty": "intermediate",
+      "evidence_level": "high",
+      "tags": ["hunger_management", "cravings", "emotional_eating", "behavioral_strategies", "mindful_eating"]
+    }
+  }
+]

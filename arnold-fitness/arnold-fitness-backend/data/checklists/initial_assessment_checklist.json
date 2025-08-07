@@ -1,0 +1,214 @@
+[
+  {
+    "phase_id": "ASS",
+    "title": "Initial Fitness Assessment",
+    "tasks": [
+      {
+        "task_id": "ASS-anthropometric_data",
+        "title": "Dati Antropometrici",
+        "checks": [
+          {
+            "check_id": "ASS-001",
+            "description": "Raccolta peso corporeo attuale e storico (ultimi 6 mesi)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-002",
+            "description": "Misurazione altezza e calcolo BMI",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-003",
+            "description": "Circonferenze corporee principali (vita, fianchi, collo, braccia)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-004",
+            "description": "Percentuale di grasso corporeo stimata o misurata",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "ASS-medical_history",
+        "title": "Anamnesi Medica e Limitazioni",
+        "checks": [
+          {
+            "check_id": "ASS-005",
+            "description": "Patologie croniche preesistenti (diabete, ipertensione, problemi cardiaci)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-006",
+            "description": "Farmaci in corso che potrebbero influenzare il metabolismo o l'attività fisica",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-007",
+            "description": "Infortuni precedenti e limitazioni fisiche attuali",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-008",
+            "description": "Allergie e intolleranze alimentari",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "ASS-lifestyle_assessment",
+        "title": "Valutazione Stile di Vita",
+        "checks": [
+          {
+            "check_id": "ASS-009",
+            "description": "Livello di attività fisica attuale (frequenza, intensità, tipo di esercizi)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-010",
+            "description": "Abitudini alimentari attuali (pasti giornalieri, orari, porzioni)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-011",
+            "description": "Qualità e quantità del sonno (ore per notte, qualità del riposo)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-012",
+            "description": "Livelli di stress e gestione dello stress",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-013",
+            "description": "Consumo di alcol, fumo e altre sostanze",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "ASS-goals_definition",
+        "title": "Definizione Obiettivi e Motivazioni",
+        "checks": [
+          {
+            "check_id": "ASS-014",
+            "description": "Obiettivo primario quantificato (peso target, massa muscolare, performance)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-015",
+            "description": "Timeline desiderata per raggiungere l'obiettivo principale",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-016",
+            "description": "Motivazioni personali e fattori che guidano la decisione di cambiamento",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-017",
+            "description": "Ostacoli potenziali identificati (tempo, risorse, supporto sociale)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-018",
+            "description": "Preferenze per tipo di attività fisica e alimentazione",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      },
+      {
+        "task_id": "ASS-baseline_fitness",
+        "title": "Valutazione Fitness di Base",
+        "checks": [
+          {
+            "check_id": "ASS-019",
+            "description": "Test di forza di base (push-up, plank, squat senza peso)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-020",
+            "description": "Test di resistenza cardiovascolare (frequenza cardiaca a riposo, recupero)",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-021",
+            "description": "Valutazione flessibilità e mobilità articolare",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          },
+          {
+            "check_id": "ASS-022",
+            "description": "Equilibrio e coordinazione motoria di base",
+            "state": "pending",
+            "notes": null,
+            "timestamp": null,
+            "related_finding_ids": []
+          }
+        ]
+      }
+    ]
+  }
+]
