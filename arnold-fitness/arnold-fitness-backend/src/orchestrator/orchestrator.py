@@ -328,7 +328,7 @@ class Orchestrator:
 
                 # Crea una guidance speciale per il troubleshooting
                 troubleshooting_guidance = {
-                    "intro": "🔧 Assistenza Tecnica Attiva",
+                    "intro": "Assistenza Tecnica Attiva",
                     "suggested_actions": [{
                         "task_id": "TROUBLESHOOT",
                         "check_id": solver_context.get("check_id", "HELP"),
@@ -344,7 +344,7 @@ class Orchestrator:
                 }
 
                 # Formatta in markdown
-                markdown_guidance = f"""## 🔧 Assistenza Troubleshooting
+                markdown_guidance = f"""## Assistenza Troubleshooting
 
     {llm_reply_dict.get("message", "Nessun messaggio di aiuto disponibile")}
 
@@ -472,7 +472,7 @@ class Orchestrator:
                 solver_context["test_id"] = test_id
                 self._debug_solver_context(solver_context)
 
-                print("🔧 CHIAMANDO TROUBLESHOOTER...")
+                print("[TROUBLESHOOTER] CHIAMANDO TROUBLESHOOTER...")
 
                 history = []
                 result = self.run_troubleshooter_loop(solver_context, history)
