@@ -170,6 +170,15 @@ Arnold e' ora pronto ad ascoltare la tua storia...
         print(color + "-" * self.terminal_width + Colors.RESET)
         print()
         
+        # Controllo di sicurezza per il testo
+        if not isinstance(text, str):
+            print(f"[ERROR] format_response ricevuto {type(text)} invece di str")
+            if isinstance(text, dict):
+                # Prova a estrarre il testo dalla risposta
+                text = text.get('guidance_markdown', text.get('last_output', {}).get('guidance_markdown', str(text)))
+            else:
+                text = str(text)
+        
         # Word wrap semplice
         words = text.split()
         line = ""
@@ -312,6 +321,17 @@ Prova a riformulare la domanda o usa /help per assistenza.
         """Ottiene risposta da Arnold"""
         try:
             result = self.arnold_cli.send_message(user_input)
+            
+            # Se il risultato è un dizionario, estrarre il testo
+            if isinstance(result, dict):
+                if 'last_output' in result and 'guidance_markdown' in result['last_output']:
+                    return result['last_output']['guidance_markdown']
+                elif 'guidance_markdown' in result:
+                    return result['guidance_markdown']
+                else:
+                    # Fallback: converti in stringa 
+                    return str(result)
+            
             return result
         except Exception as e:
             return f"Mi dispiace, ho avuto un problema tecnico. Potresti riprovare? (Errore: {e})"
