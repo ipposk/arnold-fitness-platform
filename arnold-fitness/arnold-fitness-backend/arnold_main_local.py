@@ -163,8 +163,9 @@ def mock_input(prompt=""):
 
 # ===== INTERCETTORE OUTPUT =====
 class OutputInterceptor:
-    def __init__(self):
+    def __init__(self, silent=False):
         self.templates_shown = set()
+        self.silent = silent
 
     def intercept(self, func, *args, **kwargs):
         """Intercetta l'output di una funzione e filtra i print"""
@@ -178,7 +179,7 @@ class OutputInterceptor:
         template_matches = re.findall(r'Prompt template caricato da: (.+\.txt)', output)
         for match in template_matches:
             template_name = Path(match).name
-            if template_name not in self.templates_shown:
+            if template_name not in self.templates_shown and not self.silent:
                 self.templates_shown.add(template_name)
                 print(f"[TEMPLATE] Using prompt template: {template_name}")
 
@@ -352,7 +353,7 @@ except Exception as e:
 class AWSLocalCLI:
     def __init__(self, silent=False):
         self.current_session_id = None
-        self.interceptor = OutputInterceptor()
+        self.interceptor = OutputInterceptor(silent=silent)
         self.differ = ContextDiffer()
         self.silent = silent
 
