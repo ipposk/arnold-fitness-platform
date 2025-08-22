@@ -134,7 +134,7 @@ percorso di benessere.
             print(Colors.DIM + "  ." * (i + 1) + Colors.RESET, end='\r')
             time.sleep(0.5)
         
-        # Importa e inizializza arnold_cli (sopprimendo debug output)
+        # Importa e inizializza con il nuovo sistema conversazionale
         import io
         import sys
         from contextlib import redirect_stdout, redirect_stderr
@@ -144,13 +144,42 @@ percorso di benessere.
         error_buffer = io.StringIO()
         
         try:
-            with redirect_stdout(output_buffer), redirect_stderr(error_buffer):
-                from arnold_main_local import AWSLocalCLI
-                self.arnold_cli = AWSLocalCLI()
-                self.current_session_id = self.arnold_cli.create_session()
+            # Prova il sistema conversazionale offline (senza API keys)
+            try:
+                print(f"{Colors.INFO}[INIT] Inizializzando sistema conversazionale offline...{Colors.RESET}")
+                
+                from src.orchestrator.offline_conversational_orchestrator import OfflineConversationalOrchestrator
+                
+                # Crea session ID
+                import uuid
+                self.current_session_id = f"CONV-{uuid.uuid4().hex[:8]}"
+                
+                print(f"{Colors.INFO}[INIT] Session ID: {self.current_session_id}{Colors.RESET}")
+                
+                # Inizializza il sistema conversazionale offline
+                self.conversational_orchestrator = OfflineConversationalOrchestrator(
+                    self.current_session_id
+                )
+                
+                self.use_conversational = True
+                print(f"{Colors.SUCCESS}[SUCCESS] Sistema conversazionale offline attivo!{Colors.RESET}")
+                print(f"{Colors.INFO}[INFO] Personalizzazione automatica abilitata{Colors.RESET}")
+                
+            except Exception as conv_e:
+                print(f"{Colors.ERROR}[ERROR] Impossibile inizializzare sistema conversazionale: {conv_e}{Colors.RESET}")
+                print(f"{Colors.WARNING}[FALLBACK] Usando sistema originale...{Colors.RESET}")
+                
+                # Fallback al sistema originale con output soppresso
+                with redirect_stdout(output_buffer), redirect_stderr(error_buffer):
+                    from arnold_main_local import AWSLocalCLI
+                    self.arnold_cli = AWSLocalCLI()
+                    self.current_session_id = self.arnold_cli.create_session()
+                    self.use_conversational = False
+                    
         except Exception as e:
             print(f"\n{Colors.ERROR}Errore creazione sessione: {e}{Colors.RESET}")
             self.current_session_id = "SESSION-ERROR"
+            self.use_conversational = False
         
         # Successo
         success_text = f"""
@@ -318,23 +347,66 @@ Prova a riformulare la domanda o usa /help per assistenza.
                 print(f"\n{Colors.ERROR}Errore: {e}{Colors.RESET}")
                 
     def get_arnold_response(self, user_input):
-        """Ottiene risposta da Arnold"""
+        """Ottiene risposta da Arnold usando il sistema conversazionale o fallback"""
         try:
-            result = self.arnold_cli.send_message(user_input)
-            
-            # Se il risultato è un dizionario, estrarre il testo
-            if isinstance(result, dict):
-                if 'last_output' in result and 'guidance_markdown' in result['last_output']:
-                    return result['last_output']['guidance_markdown']
-                elif 'guidance_markdown' in result:
-                    return result['guidance_markdown']
+            if hasattr(self, 'use_conversational') and self.use_conversational:
+                # Usa il nuovo sistema conversazionale
+                result = self.conversational_orchestrator.process_conversational_input(user_input)
+                
+                # Estrai la risposta principale
+                if isinstance(result, dict):
+                    if 'last_output' in result and 'guidance_markdown' in result['last_output']:
+                        response = result['last_output']['guidance_markdown']
+                    elif 'guidance_markdown' in result:
+                        response = result['guidance_markdown']
+                    else:
+                        response = str(result)
+                    
+                    # Mostra info aggiuntive se disponibili
+                    self._show_conversational_insights(result)
+                    
+                    return response
                 else:
-                    # Fallback: converti in stringa 
                     return str(result)
             
-            return result
+            else:
+                # Fallback al sistema originale
+                result = self.arnold_cli.send_message(user_input)
+                
+                # Se il risultato è un dizionario, estrarre il testo
+                if isinstance(result, dict):
+                    if 'last_output' in result and 'guidance_markdown' in result['last_output']:
+                        return result['last_output']['guidance_markdown']
+                    elif 'guidance_markdown' in result:
+                        return result['guidance_markdown']
+                    else:
+                        # Fallback: converti in stringa 
+                        return str(result)
+                
+                return result
+                
         except Exception as e:
             return f"Mi dispiace, ho avuto un problema tecnico. Potresti riprovare? (Errore: {e})"
+    
+    def _show_conversational_insights(self, result):
+        """Mostra insights del sistema conversazionale (opzionale, per debug)"""
+        try:
+            # Per ora, mostra solo se abbiamo informazioni di profiling
+            if result.get("personality_profile"):
+                profile = result["personality_profile"]
+                print(f"\n{Colors.DIM}[INSIGHT] Profilo rilevato: {profile.get('primary_type', 'N/A')} | "
+                      f"Comunicazione: {profile.get('communication_preference', 'N/A')}{Colors.RESET}")
+                
+            # Mostra stato conversazionale
+            if result.get("conversation_state"):
+                state = result["conversation_state"]
+                if state.get("phase"):
+                    print(f"{Colors.DIM}[FASE] {state['phase']} | "
+                          f"Engagement: {state.get('user_engagement', 'N/A')} | "
+                          f"Turno: {state.get('turn_count', 0)}{Colors.RESET}")
+        except Exception as e:
+            # Non interrompere per errori di visualizzazione insights
+            pass
 
 def main():
     """Funzione principale"""
