@@ -1,0 +1,63 @@
+[
+  {
+    "phase_id": "DCK",
+    "title": "Check-in Giornaliero/Settimanale",
+    "description": "Checklist per aggiornamenti regolari e monitoraggio progressi",
+    "trigger_condition": "days_since_last_session <= 7",
+    "tasks": [
+      {
+        "task_id": "DCK-progress",
+        "title": "Aggiornamento Progressi",
+        "checks": [
+          {
+            "check_id": "DCK-001",
+            "description": "Peso attuale e variazioni",
+            "context_path": "fitness_profile.progress_tracking.weight_history",
+            "required_data": ["current_weight", "measurement_date", "weight_change"],
+            "state": "pending",
+            "priority": "critical"
+          },
+          {
+            "check_id": "DCK-002",
+            "description": "Aderenza al piano nutrizionale",
+            "context_path": "nutrition_plan.adherence",
+            "required_data": ["adherence_percentage", "challenges_faced"],
+            "state": "pending",
+            "priority": "high"
+          },
+          {
+            "check_id": "DCK-003", 
+            "description": "Livelli di energia e benessere",
+            "context_path": "fitness_profile.wellness_metrics",
+            "required_data": ["energy_level", "sleep_quality", "mood"],
+            "state": "pending",
+            "priority": "medium"
+          }
+        ]
+      },
+      {
+        "task_id": "DCK-adjustments",
+        "title": "Necessità di Aggiustamenti",
+        "depends_on": ["DCK-progress"],
+        "checks": [
+          {
+            "check_id": "DCK-004",
+            "description": "Cambiamenti nello stile di vita",
+            "context_path": "fitness_profile.lifestyle_changes",
+            "required_data": ["changes_occurred", "impact_assessment"],
+            "state": "pending",
+            "priority": "medium"
+          },
+          {
+            "check_id": "DCK-005",
+            "description": "Richieste di modifica al piano",
+            "context_path": "user_requests.plan_modifications", 
+            "required_data": ["modification_requests", "reasons"],
+            "state": "pending",
+            "priority": "medium"
+          }
+        ]
+      }
+    ]
+  }
+]

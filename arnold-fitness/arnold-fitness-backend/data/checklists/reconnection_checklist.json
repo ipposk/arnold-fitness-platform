@@ -1,0 +1,63 @@
+[
+  {
+    "phase_id": "RCN",
+    "title": "Riconnessione dopo Assenza",
+    "description": "Checklist per utenti che tornano dopo un periodo di assenza (>30 giorni)",
+    "trigger_condition": "days_since_last_session > 30",
+    "tasks": [
+      {
+        "task_id": "RCN-status",
+        "title": "Valutazione Stato Attuale",
+        "checks": [
+          {
+            "check_id": "RCN-001",
+            "description": "Aggiornamento peso e composizione corporea",
+            "context_path": "fitness_profile.anthropometric_data.current_weight",
+            "required_data": ["current_weight", "weight_change_during_absence"],
+            "state": "pending",
+            "priority": "critical"
+          },
+          {
+            "check_id": "RCN-002",
+            "description": "Revisione obiettivi e motivazioni",
+            "context_path": "fitness_profile.goals",
+            "required_data": ["goals_still_valid", "new_objectives", "motivation_level"],
+            "state": "pending",
+            "priority": "critical"
+          },
+          {
+            "check_id": "RCN-003",
+            "description": "Cambiamenti significativi nella vita",
+            "context_path": "user_profile.life_changes",
+            "required_data": ["life_events", "health_changes", "schedule_changes"],
+            "state": "pending",
+            "priority": "high"
+          }
+        ]
+      },
+      {
+        "task_id": "RCN-reassessment",
+        "title": "Rivalutazione del Piano",
+        "depends_on": ["RCN-status"],
+        "checks": [
+          {
+            "check_id": "RCN-004",
+            "description": "Valutazione piano precedente",
+            "context_path": "plan_evaluation.previous_plan",
+            "required_data": ["what_worked", "what_didnt_work", "lessons_learned"],
+            "state": "pending",
+            "priority": "high"
+          },
+          {
+            "check_id": "RCN-005",
+            "description": "Adattamento del nuovo approccio",
+            "context_path": "plan_adjustments.new_approach",
+            "required_data": ["preferred_approach", "available_time", "resources"],
+            "state": "pending",
+            "priority": "high"
+          }
+        ]
+      }
+    ]
+  }
+]
