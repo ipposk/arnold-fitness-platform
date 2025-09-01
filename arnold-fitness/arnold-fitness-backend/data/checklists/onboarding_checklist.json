@@ -1,0 +1,99 @@
+[
+  {
+    "phase_id": "ONB",
+    "title": "Onboarding - Primo Utilizzo",
+    "description": "Checklist completa per nuovi utenti che si iscrivono ad Arnold",
+    "trigger_condition": "user.sessions_count == 0",
+    "tasks": [
+      {
+        "task_id": "ONB-basics",
+        "title": "Informazioni di Base",
+        "checks": [
+          {
+            "check_id": "ONB-001",
+            "description": "Nome",
+            "context_path": "user_profile.personal_info.name",
+            "required_data": ["first_name"],
+            "state": "pending",
+            "priority": "critical",
+            "example_questions": [
+              "Come ti chiami?",
+              "Qual è il tuo nome?"
+            ]
+          },
+          {
+            "check_id": "ONB-002", 
+            "description": "Età e data di nascita",
+            "context_path": "user_profile.personal_info.age",
+            "required_data": ["age", "birth_date"],
+            "state": "pending",
+            "priority": "critical"
+          },
+          {
+            "check_id": "ONB-003",
+            "description": "Genere",
+            "context_path": "user_profile.personal_info.gender",
+            "required_data": ["gender"],
+            "state": "pending", 
+            "priority": "critical"
+          }
+        ]
+      },
+      {
+        "task_id": "ONB-anthropometric",
+        "title": "Dati Fisici Iniziali",
+        "depends_on": ["ONB-basics"],
+        "checks": [
+          {
+            "check_id": "ONB-004",
+            "description": "Altezza attuale",
+            "context_path": "fitness_profile.anthropometric_data.height",
+            "required_data": ["height_cm"],
+            "state": "pending",
+            "priority": "critical"
+          },
+          {
+            "check_id": "ONB-005",
+            "description": "Peso attuale",
+            "context_path": "fitness_profile.anthropometric_data.current_weight",
+            "required_data": ["weight_kg", "measurement_date"],
+            "state": "pending",
+            "priority": "critical"
+          },
+          {
+            "check_id": "ONB-006",
+            "description": "Obiettivo principale",
+            "context_path": "fitness_profile.goals.primary_goal",
+            "required_data": ["goal_type", "target_weight", "timeline"],
+            "state": "pending",
+            "priority": "critical",
+            "valid_options": ["weight_loss", "weight_gain", "muscle_gain", "maintenance", "athletic_performance"]
+          }
+        ]
+      },
+      {
+        "task_id": "ONB-lifestyle", 
+        "title": "Stile di Vita e Preferenze",
+        "depends_on": ["ONB-anthropometric"],
+        "checks": [
+          {
+            "check_id": "ONB-007",
+            "description": "Livello di attività fisica attuale",
+            "context_path": "fitness_profile.lifestyle_assessment.activity_level",
+            "required_data": ["activity_level", "weekly_hours"],
+            "state": "pending",
+            "priority": "high"
+          },
+          {
+            "check_id": "ONB-008",
+            "description": "Preferenze alimentari e restrizioni",
+            "context_path": "fitness_profile.dietary_preferences",
+            "required_data": ["diet_type", "allergies", "restrictions"],
+            "state": "pending", 
+            "priority": "high"
+          }
+        ]
+      }
+    ]
+  }
+]

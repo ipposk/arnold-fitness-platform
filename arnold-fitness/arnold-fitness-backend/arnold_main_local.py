@@ -357,7 +357,7 @@ class AWSLocalCLI:
         self.differ = ContextDiffer()
         self.silent = silent
 
-    def create_session(self, pt_type="webapp"):
+    def create_session(self, pt_type="webapplication"):
         """Crea sessione usando il vero handler AWS"""
         event = {
             "body": json.dumps({

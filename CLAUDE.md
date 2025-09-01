@@ -21,6 +21,12 @@ npm install
 # Local development with mocked AWS services (modern interface)
 python arnold_cli_modern.py
 
+# Checklist-driven development with enhanced UI (recommended)
+python arnold_cli_checklist_driven_enhanced.py
+
+# Checklist-driven development (basic)
+python arnold_cli_checklist_driven.py
+
 # Local development (legacy interface for debugging)
 python arnold_main_local.py
 
@@ -57,16 +63,20 @@ The project consists of two main parts:
 ### Backend Architecture
 
 #### Core Components
-1. **Orchestrator** (`src/orchestrator/orchestrator.py`): Main workflow coordination
-2. **LLM Interfaces** (`src/llm_interfaces/`): Multiple specialized LLM clients for different tasks:
-   - `task_guidance_llm`: Generates step-by-step guidance
+1. **Orchestrators**:
+   - `orchestrator.py`: Main workflow coordination (legacy)
+   - `checklist_driven_orchestrator.py`: Checklist-based workflow with LLM integration for intelligent question generation
+   - `conversational_orchestrator.py`: Conversational flow management
+   
+2. **LLM Interfaces** (`src/llm_interfaces/`): Specialized LLM clients using Gemini:
+   - `task_guidance_llm`: Generates contextual questions using RAG (Qdrant + Gemini)
    - `user_input_interpreter_llm`: Processes user input and updates context
-   - `query_generator_llm`: Creates search queries
+   - `query_generator_llm`: Creates search queries for RAG retrieval
    - `troubleshooting_llm`: Handles error analysis
    - `error_classifier_llm`: Classifies and categorizes errors
 
 3. **Context Management** (`src/db_context_manager/`): Handles session state and context persistence
-4. **Validation** (`src/context_validator/`): Validates context against JSON schemas
+4. **Validation** (`src/context_validator/`): Validates context against JSON schemas  
 5. **Database Interface** (`src/db_fitness_interface/`): Retrieval interface for fitness knowledge base
 
 #### AWS Services Used
@@ -90,19 +100,28 @@ The project consists of two main parts:
 - Client management endpoints (`createClient`, `getClients`, etc.)
 
 ### Local Development
-Two CLI interfaces are available for local development:
+Multiple CLI interfaces are available for local development:
+
+**Checklist-Driven Interface (`arnold_cli_checklist_driven_enhanced.py`)** - RECOMMENDED:
+- Enhanced UI with professional visual design and animations
+- Uses `ChecklistDrivenOrchestrator` with LLM-powered intelligent question generation  
+- RAG-based contextual questions using Qdrant + Gemini
+- Automatic multi-data parsing and conversation memory
+- Beautiful progress bars and completion celebrations
+
+**Basic Checklist Interface (`arnold_cli_checklist_driven.py`)**:
+- Basic checklist-driven workflow without enhanced UI
+- Uses the same intelligent orchestrator but with simpler presentation
 
 **Modern Interface (`arnold_cli_modern.py`)**: 
-- Clean, colorful interface optimized for Windows compatibility
-- Beautiful formatting without problematic Unicode characters
-- Recommended for daily development work
+- Clean, colorful interface using legacy orchestrator
+- Good for general testing and debugging
 
 **Legacy Interface (`arnold_main_local.py`)**:
 - Original testing interface with detailed debug output
-- Useful for troubleshooting and development debugging
-- More verbose logging for technical analysis
+- Useful for low-level troubleshooting and development debugging
 
-Both interfaces:
+All interfaces:
 - Mock DynamoDB and S3 services locally
 - Use actual Lambda handlers for accurate testing
 - Include context change tracking and token usage monitoring
@@ -112,8 +131,16 @@ Both interfaces:
 The platform uses a structured checklist system for fitness coaching workflows:
 - **Phases**: High-level coaching phases (Assessment, Planning, Implementation, Monitoring)
 - **Tasks**: Grouped coaching activities  
-- **Checks**: Individual verification steps
+- **Checks**: Individual verification steps with `required_data` fields
 - **Threaded Checks**: Complex checks with sub-steps (referenced in documentation)
+
+### Intelligent Question Generation
+The `ChecklistDrivenOrchestrator` integrates LLM components for smart question generation:
+1. **Context Analysis**: Current check + conversation memory + known user data
+2. **RAG Query Generation**: `QueryGeneratorLLM` creates search queries for fitness knowledge
+3. **Knowledge Retrieval**: Qdrant searches for relevant fitness information  
+4. **Contextual Questions**: `TaskGuidanceLLM` (Gemini) generates intelligent questions based on context + RAG results
+5. **Conversation Memory**: Automatically extracts and reuses data from previous responses to avoid redundant questions
 
 Checklists are stored as JSON files in `data/checklists/` and loaded from S3 in production.
 
@@ -145,8 +172,11 @@ Multi-layered error handling with specialized LLM-based troubleshooting that can
 - `serverless.yml`: AWS infrastructure definition and environment variables
 - `backend/lambda_handlers.py`: All Lambda function implementations
 - `src/orchestrator/orchestrator.py`: Main workflow coordination logic
+- `arnold_cli_checklist_driven_enhanced.py`: Enhanced checklist-driven CLI (recommended)
+- `arnold_cli_checklist_driven.py`: Basic checklist-driven CLI  
 - `arnold_cli_modern.py`: Modern CLI interface for local development
 - `arnold_main_local.py`: Legacy CLI interface for debugging
+- `src/orchestrator/checklist_driven_orchestrator.py`: Intelligent checklist orchestrator with LLM integration
 - `requirements.txt`: Python dependencies
 - `package.json`: Node.js dependencies for serverless framework
 - `data/checklists/`: Fitness coaching checklist definitions
