@@ -681,7 +681,7 @@ def get_sessions_by_user_handler(event, context):
         }
 
 def process_chat_message_handler(event, context):
-    os.environ["PENELOPE_NON_INTERACTIVE"] = "true"
+    os.environ["ARNOLD_NON_INTERACTIVE"] = "true"
 
     try:
         test_id = event.get("pathParameters", {}).get("test_id")
@@ -695,44 +695,44 @@ def process_chat_message_handler(event, context):
                 "body": json.dumps({"error": "Parametri test_id o user_input mancanti"})
             }
 
-        from src.orchestrator.orchestrator import Orchestrator
+        from src.orchestrator.orchestrator_factory import OrchestratorFactory, OrchestratorType
         from src.db_context_manager.db_manager import DbContextManager
         from src.context_validator.context_validator import ContextValidator
-        from src.llm_interfaces.clients.gemini_client import GeminiClient
-        from src.llm_interfaces.user_input_interpreter_llm.user_input_interpreter_llm import UserInputInterpreterLLM
-        from src.llm_interfaces.query_generator_llm.query_generator_llm import QueryGeneratorLLM
-        from src.llm_interfaces.task_guidance_llm.task_guidance_llm import TaskGuidanceLLM
-        from src.llm_interfaces.troubleshooting_llm.troubleshooting_llm import TroubleshootingLLM
-        from src.llm_interfaces.error_classifier_llm.error_classifier_llm import ErrorClassifierLLM
-        from src.db_fitness_interface.mock_fitness_retriever import MockFitnessRetriever as FitnessRetriever
+        from src.logger.logger import Logger
 
+        # Initialize core dependencies
         db_manager = DbContextManager()
         validator = ContextValidator(schema_path="src/context_validator/schemas/db_context_schema.json")
+        logger = Logger()
 
-        gemini_client = GeminiClient()
-        interpreter_llm = UserInputInterpreterLLM(llm_client=gemini_client,
-                                                  prompt_templates_dir="src/llm_interfaces/user_input_interpreter_llm/prompt_templates")
-        query_generator_llm = QueryGeneratorLLM(llm_client=gemini_client,
-                                                prompt_templates_dir="src/llm_interfaces/query_generator_llm/prompt_templates")
-        task_guidance_llm = TaskGuidanceLLM(llm_client=gemini_client, retriever=FitnessRetriever(),
-                                            prompt_template_path="src/llm_interfaces/task_guidance_llm/prompt_templates/task_guidance.txt")
-        troubleshooting_llm = TroubleshootingLLM(gemini_client,
-                                                 prompt_template_path="src/llm_interfaces/troubleshooting_llm/prompt_templates/troubleshoot_command_issue.txt")
-        error_classifier_llm = ErrorClassifierLLM(gemini_client,
-                                                  prompt_template_path="src/llm_interfaces/error_classifier_llm/prompt_templates/classify_error_detection.txt")
+        # Determine orchestrator type from request or context
+        orchestrator_type = body.get("orchestrator_type", "auto")
+        
+        # Load existing context for orchestrator selection
+        existing_context = None
+        try:
+            existing_context = db_manager.load_context(test_id)
+        except Exception as e:
+            logger.debug(f"Could not load existing context for session {test_id}: {e}")
 
-        orchestrator = Orchestrator(
+        # Create orchestrator using factory
+        orchestrator = OrchestratorFactory.create_orchestrator(
+            orchestrator_type=orchestrator_type,
             db_manager=db_manager,
             validator=validator,
-            interpreter=interpreter_llm,
-            query_generator_llm=query_generator_llm,
-            task_guidance_llm=task_guidance_llm,
-            troubleshooter_llm=troubleshooting_llm,
-            error_classifier_llm=error_classifier_llm,
-            client=gemini_client
+            session_id=test_id,
+            logger=logger,
+            context=existing_context
         )
 
-        result_context = orchestrator.process_single_input(test_id, user_input)
+        # Process input using unified orchestrator interface
+        result = orchestrator.execute_workflow(user_input)
+        
+        # Extract context from standardized response
+        result_context = result.get('context', {})
+        if not result.get('success', False):
+            logger.error(f"Orchestrator processing failed: {result.get('error', 'Unknown error')}")
+            result_context['error'] = result.get('error')
 
         if log_sets_in_obj(result_context, path="process_chat_message_handler.result_context"):
             print(
@@ -984,7 +984,7 @@ def add_message_handler(event, context):
     import json, uuid
     from datetime import datetime
     ddb = boto3.resource("dynamodb")
-    table = ddb.Table("PentestMessages")
+    table = ddb.Table("ArnoldMessages")
 
     test_id = event.get("pathParameters", {}).get("test_id")
     body = json.loads(event.get("body", "{}"))
@@ -1015,7 +1015,7 @@ def list_messages_handler(event, context):
     import json
     from boto3.dynamodb.conditions import Key
     ddb = boto3.resource("dynamodb")
-    table = ddb.Table("PentestMessages")
+    table = ddb.Table("ArnoldMessages")
 
     test_id = event.get("pathParameters", {}).get("test_id")
     limit = int(event.get("queryStringParameters", {}).get("limit", 50))
@@ -1846,7 +1846,7 @@ def reassign_session_handler(event, context):
         claims = event.get("requestContext", {}).get("authorizer", {}).get("claims", {})
         user_email = claims.get("email")
 
-        if user_email != "teamleader@demo.penelope.com":
+        if user_email != "admin@arnold.fitness":
             return {
                 "statusCode": 403,
                 "headers": CORS_HEADERS,

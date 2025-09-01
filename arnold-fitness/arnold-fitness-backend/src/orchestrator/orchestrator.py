@@ -1,4 +1,4 @@
-# File: rag-pentest-backend/src/orchestrator/orchestrator.py
+# File: arnold-fitness-backend/src/orchestrator/orchestrator.py
 
 import json
 import os
@@ -185,9 +185,9 @@ def format_suggested_actions_to_markdown(suggested_actions: list, intro: str = N
 
 class Orchestrator:
     """
-    Orchestratore principale del sistema RAG per penetration testing.
-    Coordina il flusso tra classificazione errori, interpretazione input,
-    generazione query, retrieval semantico e creazione guidance.
+    Orchestratore principale del sistema RAG per coaching fitness.
+    Coordina il flusso tra interpretazione input, generazione query,
+    retrieval semantico e creazione guidance personalizzata.
     """
 
     def __init__(self,

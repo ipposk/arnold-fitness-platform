@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Arnold is a cloud-native RAG (Retrieval Augmented Generation) platform for fitness coaching and nutrition guidance. Originally evolved from Penelope (a penetration testing platform), it maintains the same robust architecture while focusing on personalized fitness and wellness coaching using AI-driven guidance.
+Arnold is a cloud-native RAG (Retrieval Augmented Generation) platform for fitness coaching and nutrition guidance. It leverages a robust serverless architecture to deliver personalized fitness and wellness coaching using AI-driven guidance.
 
 ## Key Commands
 
@@ -18,17 +18,15 @@ pip install -r requirements.txt
 # Install Node.js dependencies for serverless framework
 npm install
 
-# Local development with mocked AWS services (modern interface)
-python arnold_cli_modern.py
+# Unified CLI Interface (recommended)
+python cli/main.py checklist          # Enhanced checklist-driven interface
+python cli/main.py demo               # Modern demo interface  
+python cli/main.py debug              # Legacy debugging interface
 
-# Checklist-driven development with enhanced UI (recommended)
-python arnold_cli_checklist_driven_enhanced.py
-
-# Checklist-driven development (basic)
-python arnold_cli_checklist_driven.py
-
-# Local development (legacy interface for debugging)
-python arnold_main_local.py
+# Legacy CLI Files (still functional but deprecated)
+python arnold_cli_checklist_driven_enhanced.py  # Legacy enhanced
+python arnold_cli_modern.py                     # Legacy modern
+python arnold_main_local.py                     # Legacy debug
 
 # Deploy to AWS (requires proper AWS credentials and environment variables)
 serverless deploy
@@ -100,26 +98,29 @@ The project consists of two main parts:
 - Client management endpoints (`createClient`, `getClients`, etc.)
 
 ### Local Development
-Multiple CLI interfaces are available for local development:
+**Unified CLI Interface** - Single entry point for all development modes:
 
-**Checklist-Driven Interface (`arnold_cli_checklist_driven_enhanced.py`)** - RECOMMENDED:
-- Enhanced UI with professional visual design and animations
-- Uses `ChecklistDrivenOrchestrator` with LLM-powered intelligent question generation  
+**`python cli/main.py checklist`** - RECOMMENDED:
+- Enhanced checklist-driven interface with professional UI
+- Uses `ChecklistDrivenOrchestrator` with LLM-powered question generation
 - RAG-based contextual questions using Qdrant + Gemini
-- Automatic multi-data parsing and conversation memory
-- Beautiful progress bars and completion celebrations
+- Automatic conversation memory and progress tracking
+- Beautiful visual elements with unified color system
 
-**Basic Checklist Interface (`arnold_cli_checklist_driven.py`)**:
-- Basic checklist-driven workflow without enhanced UI
-- Uses the same intelligent orchestrator but with simpler presentation
+**`python cli/main.py demo`**:
+- Modern demo interface for presentations and general testing
+- Clean, colorful interface good for showcasing functionality
+- Based on the legacy modern orchestrator
 
-**Modern Interface (`arnold_cli_modern.py`)**: 
-- Clean, colorful interface using legacy orchestrator
-- Good for general testing and debugging
-
-**Legacy Interface (`arnold_main_local.py`)**:
-- Original testing interface with detailed debug output
+**`python cli/main.py debug`**:
+- Legacy debugging interface with detailed output
 - Useful for low-level troubleshooting and development debugging
+- Most verbose logging and error reporting
+
+**Legacy CLI Files** (still functional but deprecated):
+- `arnold_cli_checklist_driven_enhanced.py`: Enhanced checklist interface
+- `arnold_cli_modern.py`: Modern demo interface  
+- `arnold_main_local.py`: Legacy debugging interface
 
 All interfaces:
 - Mock DynamoDB and S3 services locally

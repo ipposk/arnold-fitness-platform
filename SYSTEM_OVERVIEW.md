@@ -1,26 +1,33 @@
-# Arnold AI Nutritionist - Workflow Sistema Completo
+# Arnold Fitness Platform - Complete System Workflow
 
-## Panoramica del Sistema Derivato
+## System Overview
 
-**Arnold** deriva direttamente da **Penelope**, un sistema di penetration testing automatizzato. L'architettura modulare è stata adattata dal dominio cybersecurity al coaching nutrizionale, mantenendo la stessa logica di workflow e checklist.
+**Arnold Fitness Platform** is a cloud-native RAG (Retrieval Augmented Generation) platform for fitness coaching and nutrition guidance. The system leverages robust architectural patterns and advanced AI orchestration to deliver personalized fitness and wellness coaching through intelligent, evidence-based guidance systems.
+
+### Recent System Enhancements
+- **Legacy Cleanup Completed**: System fully rebranded and optimized for Arnold Fitness platform
+- **Database Migration**: All tables updated from "Pentest*" to "Arnold*" naming convention
+- **Unified CLI Architecture**: New modular CLI system with three distinct modes
+- **Enhanced Conversational System**: Advanced personality profiling and adaptive prompting
+- **Intelligent Orchestration**: Multiple orchestrator patterns for different use cases
 
 ---
 
 ## Workflow Dettagliato - Mappatura File Repository
 
-### **CICLO 1: Prima Interazione**
+### **CYCLE 1: First Interaction**
 
-**Input Utente:** `"Ciao, sono Francesco e vorrei dimagrire"`
+**User Input:** `"Hi, I'm Francesco and I want to lose weight"`
 
 #### Step 1: User Input Analysis
 - **File**: `src/llm_interfaces/user_input_interpreter_llm/user_input_interpreter_llm.py`
 - **Prompt**: `src/llm_interfaces/user_input_interpreter_llm/prompt_templates/update_context_with_observation.txt`
-- **Funzione**: Analizza il messaggio e aggiorna il context JSON
+- **Function**: Analyzes the message and updates the context JSON
 - **Output**: Scrive nel `db_context_schema.json` → nome=Francesco, goal=weight_loss
 
 #### Step 2: Checklist Status Check
 - **File**: `data/checklists/initial_assessment_checklist.json`
-- **Logica**: Sistema verifica che siamo all'inizio → ASS-001 (status: pending)
+- **Logic**: System verifies we're at the beginning → ASS-001 (status: pending)
 - **Context**: `context + checklist_id` → Francesco vuole dimagrire + siamo in fase ASS-001
 
 #### Step 3: RAG Query Generation
@@ -43,14 +50,14 @@
 
 ---
 
-### **CICLO 2+: Interazioni Successive con Troubleshooter**
+### **CYCLE 2+: Subsequent Interactions with Troubleshooter**
 
-**Input Utente:** `"Sono alto 1.75m"`
+**User Input:** `"I'm 1.75m tall"`
 
 #### Pre-Step: Error Classification
 - **File**: `src/llm_interfaces/error_classifier_llm/error_classifier_llm.py`
 - **Prompt**: `src/llm_interfaces/error_classifier_llm/prompt_templates/classify_error_detection.txt`
-- **Logica**: Confronta input utente con `last_output` salvato nel context
+- **Logic**: Compares user input with `last_output` saved in context
 - **Decision**: L'utente ha risposto alla domanda? → routing verso troubleshooter o workflow normale
 
 #### Troubleshooter Mode (se necessario)
@@ -62,26 +69,43 @@
   3. **Se SÌ**: Segna ASS-001 come completato, passa ad ASS-002
   4. **Se NO**: Aiuta utente a completare ASS-001
 
-#### Orchestrator Logic
+#### Orchestrator Architecture
+The system now features multiple orchestrator patterns for different use cases:
+
+**1. Legacy Orchestrator**
 - **File**: `src/orchestrator/orchestrator.py`
-- **Funzione**: `process_single_input()` coordina tutto il workflow
+- **Function**: `process_single_input()` coordinates traditional workflow
+- **Use Case**: Basic processing, debugging, legacy compatibility
 - **Logic Tree**:
   ```python
   if error_classifier.is_error(user_input, last_output):
       result = troubleshooter.resolve(user_input, last_output)
       if result.issue_resolved:
-          return process_single_input(final_user_input)  # Ricorsione
+          return process_single_input(final_user_input)  # Recursion
       else:
-          return troubleshooter_guidance  # Chiedi chiarimenti
+          return troubleshooter_guidance  # Ask for clarification
   else:
-      # Workflow normale Step 1-5
+      # Normal workflow Step 1-5
   ```
+
+**2. Checklist-Driven Orchestrator** *(Recommended)*
+- **File**: `src/orchestrator/checklist_driven_orchestrator.py`  
+- **Features**: Rigorous checklist adherence, RAG-based question generation
+- **Integration**: TaskGuidanceLLM + QueryGeneratorLLM + MockFitnessRetriever
+- **Intelligence**: Context analysis, conversation memory, automatic multi-data parsing
+- **Workflow**: Follows strict checklist sequences with LLM-powered contextual questions
+
+**3. Conversational Orchestrator**
+- **File**: `src/orchestrator/conversational_orchestrator.py`
+- **Features**: Enhanced conversational flow with personality adaptation
+- **Integration**: Complete personality profiling and adaptive prompting system
+- **Advanced Features**: Style analysis, empathy adaptation, dynamic tone adjustment
 
 ---
 
-## **Mapping Checklist → Standard Nutrizionali**
+## **Checklist Mapping → Fitness Standards**
 
-### Checklist Nutrizionali (sostituti OWASP)
+### Fitness Checklists (Evidence-Based Protocols)
 - **File**: `data/checklists/initial_assessment_checklist.json`
   - `ASS-001`: Raccolta peso corporeo (→ anthropometric_data.current_weight)
   - `ASS-002`: Misurazione altezza e BMI (→ anthropometric_data.height)
@@ -91,7 +115,7 @@
   - `WL-001`: Calcolo BMR/TDEE (→ nutrition_plan.daily_calories)
   - `WL-002`: Definizione deficit calorico (→ nutrition_plan.deficit_calories)
 
-### Knowledge Base Nutrizionale (sostituta MITRE ATT&CK)
+### Fitness Knowledge Base (Comprehensive Training Database)
 - **Folder**: `data/fitness_knowledge/`
   - `assessment/`: Protocolli antropometrici professionali
   - `nutrition/`: Calcoli metabolici, macronutrienti
@@ -118,56 +142,128 @@
   }
   ```
 
-### Personalizzazione Multi-Sessione
-- **Storage**: DynamoDB tables (`ArnoldSessions`, `ArnoldMessages`)
-- **Logic**: Context accumula personalità, preferenze, trigger emotivi
-- **Result**: Ogni sessione Arnold "ricorda" Francesco e adatta stile comunicativo
+### Multi-Session Personalization
+- **Storage**: DynamoDB tables (`ArnoldSessions`, `ArnoldMessages`, `ArnoldClients`, `ArnoldSessionVersions`)
+- **Multi-tenancy**: `Organizations` and `OrganizationMembers` tables for enterprise support
+- **Logic**: Context accumulates personality, preferences, emotional triggers
+- **Result**: Each session Arnold "remembers" users and adapts communication style
+- **Admin Contact**: Updated to `admin@arnold.fitness` (from legacy system)
+- **Environment Variables**: Uses `ARNOLD_NON_INTERACTIVE` (updated from `PENELOPE_NON_INTERACTIVE`)
 
 ---
 
-## **Entry Points e Testing**
+## **Entry Points and Testing**
 
-### CLI Development
-- **File**: `arnold_cli_clean.py` (nuovo, refactored)
-- **Features**: 
-  - Workflow 5-step visualization: `[1→2→3→4→5]`
-  - Live prompt editing: `/edit task_guidance`
-  - Rerun con modifiche: `/rerun`
+### Unified CLI System
+- **Primary Entry Point**: `cli/main.py` - Unified CLI with three operational modes
+- **Architecture**: Modular structure with dedicated UI components and mode handlers
+- **Color System**: Unified color management in `cli/ui/colors.py` for consistent UX
+
+#### CLI Modes Available:
+1. **Checklist Mode** (`checklist`) - Enhanced checklist-driven interface *(recommended)*
+   - File: `cli/modes/checklist_mode.py`
+   - Features: Professional visual design, progress animations, intelligent question generation
+   - Uses: `ChecklistDrivenOrchestrator` with LLM-powered contextual questions
+
+2. **Debug Mode** (`debug`) - Legacy debugging interface
+   - File: `cli/modes/debug_mode.py`  
+   - Features: Detailed debug output, low-level troubleshooting capabilities
+   - Uses: Original `orchestrator.py` with verbose logging
+
+3. **Demo Mode** (`demo`) - Modern demo interface
+   - File: `cli/modes/demo_mode.py`
+   - Features: Clean, colorful interface for demonstrations
+   - Uses: Modern orchestration patterns
+
+#### Legacy CLI Files (Still Available):
+- `arnold_cli_checklist_driven_enhanced.py` - Enhanced checklist interface
+- `arnold_cli_checklist_driven.py` - Basic checklist interface  
+- `arnold_cli_modern.py` - Modern interface
+- `arnold_main_local.py` - Original local testing interface
 
 ### Backend Integration
 - **File**: `backend/lambda_handlers.py`
+- **Database Tables**: All updated to Arnold naming (`ArnoldSessions`, `ArnoldMessages`, `ArnoldClients`)
 - **Endpoint**: `process_chat_message_handler()` → orchestrator.process_single_input()
 - **Deployment**: `serverless.yml` → AWS Lambda functions
+- **Admin Contact**: Updated to `admin@arnold.fitness`
+- **Environment Variables**: Uses `ARNOLD_NON_INTERACTIVE`
 
 ### Local Testing
 - **File**: `local_testing/components.py`
 - **Mock Services**: DynamoDB, S3, Qdrant via `MockFitnessRetriever`
-- **Same Logic**: Esatti stessi components di AWS Lambda
+- **Same Logic**: Exact same components as AWS Lambda
 
 ---
 
-## **Miglioramenti Strategici Suggeriti**
+## **Advanced Conversational System Architecture**
 
-### 1. **Checklist Enforcement Rigoroso**
-- Arnold deve SEMPRE seguire checklist sequenzialmente
-- NO consigli nutrizionali prima di completare assessment (ASS-001 to ASS-022)
-- Troubleshooter deve verificare completion criteria per ogni check
+### New Conversational Modules
 
-### 2. **Context Enrichment Progressivo**
-- Ogni interazione arricchisce `fitness_profile`
-- Pattern recognition per personalità (perfectionist, chaotic, etc.)
-- Memory di successi/fallimenti precedenti
+**1. Personality Profiler** (`src/personality_profiler/`)
+- `style_analyzer.py` - Analyzes user communication patterns and preferences
+- `personality_mapper.py` - Maps personality traits for coaching adaptation
+- `empathy_adapter.py` - Adjusts empathy level and emotional intelligence based on user needs
 
-### 3. **RAG Content Expansion**
-- Current: 23 documenti base in `data/fitness_knowledge/`
-- Target: Knowledge base comprehensiva con protocolli professionali
-- Integration: Linee guida nutrizionisti italiani, evidenze scientifiche
+**2. Adaptive Prompting** (`src/adaptive_prompting/`)
+- `prompt_personalizer.py` - Personalizes prompts based on individual user profile
+- `question_generator.py` - Generates contextually appropriate questions using RAG
+- `tone_adjuster.py` - Dynamically adjusts communication tone and style
 
-### 4. **Troubleshooter Behavioral Intelligence**
-- Estendere oltre "completion check"
-- Riconoscimento blocchi motivazionali, emotional eating
-- Strategie adattive per diverse personalità utente
+**3. Conversation Director** (`src/conversation_director/`)
+- `flow_manager.py` - Manages conversation flow and state transitions
+- `question_selector.py` - Selects optimal questions from generated options
+- `context_bridge.py` - Bridges context between conversation components
 
 ---
 
-**Questo workflow mantiene la robustezza di Penelope adattandola al coaching nutrizionale professionale, con checklist evidence-based e personalizzazione psicologica avanzata.**
+## **System Integration and Data Flow**
+
+### Enhanced Lambda Functions
+All Lambda functions have been updated with Arnold-specific table names and enhanced authorization:
+- `createSession` → `ArnoldSessions`
+- `processChatMessage` → `ArnoldMessages` 
+- `getSessionContext` → `ArnoldSessions`
+- `updateChecklist` → Integrated with S3 checklist storage
+- Client management → `ArnoldClients`
+- Organization management → `Organizations`, `OrganizationMembers`
+
+### Token Usage and Performance Monitoring
+Comprehensive tracking system:
+- Per-operation token counting with detailed breakdowns
+- Session-level aggregation and analytics
+- Cost estimation and budget monitoring
+- Performance metrics and optimization insights
+- Complete LLM interaction history for debugging
+
+---
+
+## **Strategic Improvements and Current Status**
+
+### 1. **Checklist Enforcement System** ✅ *IMPLEMENTED*
+- Arnold follows checklists sequentially with strict validation
+- No fitness advice provided before completing assessment phases
+- Troubleshooter verifies completion criteria for each check
+- Enhanced with LLM-powered intelligent question generation
+
+### 2. **Context Enrichment and Personalization** ✅ *IMPLEMENTED*
+- Each interaction enriches `fitness_profile` with progressive learning
+- Advanced personality pattern recognition (analytical, emotional, goal-oriented, etc.)
+- Memory system for success/failure patterns and user preferences
+- Adaptive communication style based on personality profiling
+
+### 3. **RAG Knowledge Base** ✅ *EXPANDED*
+- Current: Comprehensive knowledge base in `data/fitness_knowledge/`
+- Evidence-based protocols for assessment, nutrition, training, behavioral coaching
+- Integration with Qdrant vector database for semantic search
+- Contextual knowledge retrieval based on user goals and current phase
+
+### 4. **Behavioral Intelligence System** ✅ *IMPLEMENTED*
+- Advanced troubleshooting beyond simple completion checks
+- Recognition of motivational blocks, emotional eating patterns
+- Adaptive strategies for different personality types
+- Empathy adjustment based on user emotional state
+
+---
+
+**The Arnold Fitness Platform maintains architectural robustness while delivering professional fitness coaching through evidence-based checklists, intelligent personalization, and advanced conversational AI.**

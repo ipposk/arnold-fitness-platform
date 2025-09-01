@@ -48,7 +48,7 @@ provider:
           Resource:
             - arn:aws:s3:::serverless-framework-deployments-eu-west-1-0944404d-92d2/checklists/*
 
-        # Permessi per tabella PentestSessions (sessioni principali)
+        # Permessi per tabella ArnoldSessions (sessioni principali)
         - Effect: Allow
           Action:
             - dynamodb:GetItem
@@ -316,7 +316,7 @@ package:
     - env/**
     - qdrant_storage/**
     - config/**
-    - rag-pentest-ui/**
+    - arnold-fitness-ui/**
     - "**/*.pyc"
     - "**/*.egg-info"
     - "**/__pycache__/**"
