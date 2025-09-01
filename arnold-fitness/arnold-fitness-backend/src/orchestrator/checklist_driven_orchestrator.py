@@ -11,6 +11,12 @@ import uuid
 # Import componenti esistenti
 from src.personality_profiler import StyleAnalyzer, PersonalityMapper, EmpathyAdapter
 
+# Import LLM interfaces per generazione domande intelligenti
+from src.llm_interfaces.task_guidance_llm.task_guidance_llm import TaskGuidanceLLM
+from src.llm_interfaces.query_generator_llm.query_generator_llm import QueryGeneratorLLM
+from src.llm_interfaces.clients.gemini_client import GeminiClient
+from src.db_fitness_interface.mock_fitness_retriever import MockFitnessRetriever
+
 class ChecklistDrivenOrchestrator:
     """
     Orchestrator che implementa rigorosamente la logica checklist-driven:
@@ -36,6 +42,24 @@ class ChecklistDrivenOrchestrator:
             self.personality_mapper = None
             self.empathy_adapter = None
         
+        # Inizializza componenti LLM per domande intelligenti
+        try:
+            gemini_client = GeminiClient()
+            retriever = MockFitnessRetriever()
+            
+            # TaskGuidanceLLM per generare domande contestuali
+            prompt_path = "src/llm_interfaces/task_guidance_llm/task_guidance_prompt.txt"
+            self.task_guidance_llm = TaskGuidanceLLM(gemini_client, prompt_path, retriever)
+            
+            # QueryGeneratorLLM per creare query RAG 
+            query_prompt_path = "src/llm_interfaces/query_generator_llm/query_generator_prompt.txt"
+            self.query_generator_llm = QueryGeneratorLLM(gemini_client, query_prompt_path)
+            
+        except Exception as e:
+            print(f"Warning: Could not initialize LLM components: {e}")
+            self.task_guidance_llm = None
+            self.query_generator_llm = None
+        
         # Percorsi checklist
         self.checklist_dir = Path("data/checklists")
         
@@ -43,6 +67,13 @@ class ChecklistDrivenOrchestrator:
         self.current_checklist = None
         self.current_check = None
         self.personality_profile = None
+        
+        # Memoria conversazionale per dati già forniti
+        self.conversation_memory = {
+            'user_responses': [],
+            'extracted_data_history': {},
+            'context_mentions': {}
+        }
         
         # Inizializza checklist all'avvio
         self._initialize_checklist()
@@ -78,6 +109,9 @@ class ChecklistDrivenOrchestrator:
         Processo principale che segue rigorosamente la logica checklist-driven
         """
         try:
+            # STEP 0: Salva input nella memoria conversazionale
+            self.conversation_memory['user_responses'].append(user_input)
+            
             # STEP 1: Analizza personalità dell'utente (SOLO per stile comunicativo)
             self.personality_profile = self._analyze_user_personality(user_input)
             
@@ -86,23 +120,38 @@ class ChecklistDrivenOrchestrator:
                 checklist_type = self._determine_checklist_type()
                 self.current_checklist = self._load_checklist(checklist_type)
             
-            # STEP 3: Trova il check corrente (primo in_progress o pending)
+            # STEP 3: Trova il check corrente (primo in_progress o pending)  
+            self.current_check = self._find_current_check()
+            
+            # STEP 4: Prima processa l'input corrente, POI auto-completa dalla memoria
+            if self.current_check:
+                completion_result = self._check_completion_with_troubleshooter(user_input)
+                
+                if completion_result['is_complete']:
+                    # Completa il check corrente
+                    self._mark_check_completed(self.current_check['check_id'], completion_result['extracted_data'])
+            
+            # STEP 5: Ora auto-completa TUTTI i check possibili dalla memoria (incluso input corrente)
+            self._auto_complete_checks_from_memory()
+            
+            # STEP 6: Trova il prossimo check da processare
             self.current_check = self._find_current_check()
             
             if not self.current_check:
                 return self._generate_completion_response()
             
-            # STEP 4: Usa troubleshooter per verificare se l'input completa il check corrente
-            completion_result = self._check_completion_with_troubleshooter(user_input)
+            # STEP 7: Genera risposta appropriata
+            # Verifica se il check corrente è già completato o se ci sono dati mancanti
+            current_completion = self._check_completion_with_troubleshooter(user_input)
             
-            if completion_result['is_complete']:
-                # STEP 5a: Marca come completed e avanza al prossimo
-                self._mark_check_completed(self.current_check['check_id'], completion_result['extracted_data'])
+            if current_completion['is_complete']:
+                # Check completato, avanza al prossimo
+                self._mark_check_completed(self.current_check['check_id'], current_completion['extracted_data'])
                 self._advance_to_next_check()
                 return self._generate_advancement_response()
             else:
-                # STEP 5b: Richiedi completamento del check corrente
-                return self._generate_completion_request_response(completion_result['missing_data'])
+                # Check non completato, richiedi dati mancanti
+                return self._generate_completion_request_response(current_completion['missing_data'])
                 
         except Exception as e:
             return self._generate_error_response(str(e))
@@ -267,12 +316,141 @@ class ChecklistDrivenOrchestrator:
                 elif height_match.group(2):  # meters
                     extracted['height_cm'] = int(float(height_match.group(2)) * 100)
         
+        if 'birth_date' in required_fields:
+            import re
+            # Pattern per date di nascita (DD/MM/YYYY o DD-MM-YYYY)
+            date_patterns = [
+                r'(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})',  # DD/MM/YYYY or DD-MM-YYYY
+                r'(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})'   # DD/MM/YY or DD-MM-YY
+            ]
+            
+            for pattern in date_patterns:
+                date_match = re.search(pattern, user_input)
+                if date_match:
+                    try:
+                        day, month, year = date_match.groups()
+                        day, month = int(day), int(month)
+                        year = int(year)
+                        
+                        # Convert 2-digit year to 4-digit
+                        if year < 100:
+                            year = 2000 + year if year < 30 else 1900 + year
+                        
+                        # Basic validation
+                        if 1 <= day <= 31 and 1 <= month <= 12 and 1900 <= year <= 2020:
+                            extracted['birth_date'] = f"{day:02d}/{month:02d}/{year}"
+                            break
+                    except (ValueError, IndexError):
+                        continue
+
+        if 'gender' in required_fields:
+            lower_input = user_input.lower().strip()
+            # Pattern per genere
+            gender_mappings = {
+                'maschio': 'male', 'uomo': 'male', 'male': 'male', 'm': 'male',
+                'femmina': 'female', 'donna': 'female', 'female': 'female', 'f': 'female'
+            }
+            
+            for key, value in gender_mappings.items():
+                if key in lower_input:
+                    extracted['gender'] = value
+                    break
+
         if 'weight_kg' in required_fields:
             import re
             weight_match = re.search(r'(\d{1,3})\s*kg', lower_input)
             if weight_match:
                 extracted['weight_kg'] = int(weight_match.group(1))
                 extracted['measurement_date'] = datetime.now().isoformat()
+
+        if 'goal_type' in required_fields:
+            lower_input = user_input.lower()
+            goal_mappings = {
+                'perdere peso': 'weight_loss', 'dimagrire': 'weight_loss', 'perdere': 'weight_loss',
+                'aumentare peso': 'weight_gain', 'ingrassare': 'weight_gain', 'aumentare': 'weight_gain',
+                'massa muscolare': 'muscle_gain', 'muscoli': 'muscle_gain', 'massa': 'muscle_gain',
+                'mantenere': 'maintenance', 'mantenimento': 'maintenance',
+                'performance': 'athletic_performance', 'atletica': 'athletic_performance', 'sport': 'athletic_performance'
+            }
+            
+            for key, value in goal_mappings.items():
+                if key in lower_input:
+                    extracted['goal_type'] = value
+                    break
+        
+        if 'target_weight' in required_fields:
+            import re
+            # Pattern per peso obiettivo - ESTESI
+            target_patterns = [
+                r'perdere\s+(\d{1,3})\s*kg',              # "perdere 15 kg"
+                r'dimagrire\s+(\d{1,3})\s*kg',            # "dimagrire 15 kg"
+                r'peso\s+(\d{1,3})\s*kg',                 # "peso 81 kg" 
+                r'raggiungere\s+(\d{1,3})\s*kg',          # "raggiungere 81 kg"
+                r'arrivare\s+a\s+pesare.*?(\d{1,3})\s*kg', # "arrivare a pesare 80 kg"
+                r'pesare.*?(\d{1,3})\s*kg',               # "pesare intorno agli 80 kg"
+                r'obiettivo.*?(\d{1,3})\s*kg',            # "obiettivo 80 kg"
+                r'(\d{1,3})\s*kg.*obiettivo',             # "80 kg come obiettivo"
+                r'intorno\s+a[gli]*\s*(\d{1,3})\s*kg'     # "intorno agli 80 kg"
+            ]
+            
+            current_weight = extracted.get('weight_kg')  # Se già estratto
+            if not current_weight:
+                # Cerca il peso attuale nella conversazione
+                for response in self.conversation_memory.get('user_responses', []):
+                    weight_match = re.search(r'(\d{1,3})\s*kg', response)
+                    if weight_match:
+                        current_weight = int(weight_match.group(1))
+                        break
+            
+            for pattern in target_patterns:
+                match = re.search(pattern, lower_input)
+                if match:
+                    if 'perdere' in pattern or 'dimagrire' in pattern:
+                        # È una perdita di peso
+                        weight_loss = int(match.group(1))
+                        if current_weight:
+                            extracted['target_weight'] = current_weight - weight_loss
+                        else:
+                            # Stima ragionevole se non abbiamo peso attuale
+                            extracted['target_weight'] = 70  # Default ragionevole
+                    else:
+                        # È un peso obiettivo diretto
+                        target_weight = int(match.group(1))
+                        extracted['target_weight'] = target_weight
+                        
+                        # Inferisce automaticamente il goal_type se non già presente
+                        if 'goal_type' not in extracted and current_weight:
+                            if target_weight < current_weight:
+                                extracted['goal_type'] = 'weight_loss'
+                            elif target_weight > current_weight:
+                                extracted['goal_type'] = 'weight_gain'
+                            else:
+                                extracted['goal_type'] = 'maintenance'
+                    break
+        
+        if 'timeline' in required_fields:
+            import re
+            timeline_patterns = [
+                r'(\d{1,2})\s*mes[ei]',               # "6 mesi"
+                r'(\d{1,2})\s*settiman[ae]',          # "8 settimane"
+                r'(\d{1,2})\s*ann[oi]'                # "1 anno"
+            ]
+            
+            for pattern in timeline_patterns:
+                match = re.search(pattern, lower_input)
+                if match:
+                    number = int(match.group(1))
+                    if 'mes' in pattern:
+                        extracted['timeline'] = f"{number} mesi"
+                    elif 'settiman' in pattern:
+                        extracted['timeline'] = f"{number} settimane"  
+                    elif 'ann' in pattern:
+                        extracted['timeline'] = f"{number} anni"
+                    break
+            
+            # Se non trova un timeline specifico, usa default ragionevole
+            if 'timeline' not in extracted and ('perdere' in lower_input or 'dimagrire' in lower_input):
+                extracted['timeline'] = "6 mesi"  # Default per perdita peso
         
         return extracted
     
@@ -338,6 +516,80 @@ class ChecklistDrivenOrchestrator:
         
         return None
     
+    def _check_input_against_future_checks(self, user_input: str) -> Dict:
+        """
+        Verifica se l'input può completare un check futuro invece di quello corrente
+        """
+        for task in self.current_checklist.get('tasks', []):
+            for check in task.get('checks', []):
+                if check['state'] == 'pending' and check['check_id'] != self.current_check['check_id']:
+                    # Testa se questo input completa il check futuro
+                    required_data = check.get('required_data', [])
+                    extracted_data = self._extract_data_from_input(user_input, required_data)
+                    missing_data = [field for field in required_data if field not in extracted_data]
+                    
+                    if len(missing_data) == 0:  # Trovato match completo!
+                        return {
+                            'found_match': True,
+                            'target_check': check,
+                            'extracted_data': extracted_data
+                        }
+        
+        return {'found_match': False}
+    
+    def _set_current_check(self, check_id: str) -> None:
+        """
+        Imposta un check specifico come quello corrente
+        """
+        for task in self.current_checklist.get('tasks', []):
+            for check in task.get('checks', []):
+                if check['check_id'] == check_id:
+                    check['state'] = 'in_progress'
+                    self.current_check = check
+                    return
+    
+    def _auto_complete_checks_from_memory(self) -> None:
+        """
+        Auto-completa check usando dati già estratti dalla conversazione
+        """
+        # Estrai tutti i dati da tutte le risposte precedenti
+        all_conversation_data = {}
+        for response in self.conversation_memory['user_responses']:
+            # Test per tutti i possibili tipi di dati
+            all_possible_fields = ['first_name', 'age', 'birth_date', 'gender', 'height_cm', 'weight_kg', 
+                                 'goal_type', 'target_weight', 'timeline', 'activity_level', 'weekly_hours',
+                                 'diet_type', 'allergies', 'restrictions']
+            extracted = self._extract_data_from_input(response, all_possible_fields)
+            all_conversation_data.update(extracted)
+        
+        # Salva nella memoria
+        self.conversation_memory['extracted_data_history'].update(all_conversation_data)
+        
+        # Debug: mostra cosa è stato estratto
+        if all_conversation_data:
+            print(f"DEBUG: Dati estratti dalla conversazione: {all_conversation_data}")
+        
+        # Auto-completa check che possono essere risolti con dati già noti
+        completed_any = False
+        for task in self.current_checklist.get('tasks', []):
+            for check in task.get('checks', []):
+                if check['state'] == 'pending':
+                    required_data = check.get('required_data', [])
+                    available_data = {field: all_conversation_data[field] 
+                                    for field in required_data 
+                                    if field in all_conversation_data}
+                    
+                    print(f"DEBUG: Check {check['check_id']} richiede {required_data}, disponibili {list(available_data.keys())}")
+                    
+                    # Se abbiamo tutti i dati necessari, completa automaticamente
+                    if len(available_data) == len(required_data) and len(available_data) > 0:
+                        print(f"DEBUG: Auto-completando check {check['check_id']} con dati {available_data}")
+                        self._mark_check_completed(check['check_id'], available_data)
+                        completed_any = True
+        
+        if completed_any:
+            print("DEBUG: Alcuni check sono stati auto-completati dalla memoria")
+    
     def _analyze_user_personality(self, user_input: str) -> Dict:
         """
         Analizza la personalità SOLO per personalizzare lo stile comunicativo
@@ -377,23 +629,86 @@ class ChecklistDrivenOrchestrator:
     
     def _generate_check_question(self, check: Dict, missing_data: List[str]) -> str:
         """
-        Genera la domanda base per il check (senza personalizzazione)
+        Genera domande contestuali intelligenti usando TaskGuidanceLLM + RAG
         """
-        # Usa esempi dalla checklist se disponibili
+        # Se i componenti LLM non sono disponibili, usa fallback
+        if not self.task_guidance_llm or not self.query_generator_llm:
+            return self._generate_fallback_question(check, missing_data)
+        
+        try:
+            # Prepara il context per l'LLM
+            checklist_context = {
+                'current_check': check,
+                'missing_data': missing_data,
+                'known_data': self.conversation_memory.get('extracted_data_history', {}),
+                'checklist_phase': self.current_checklist.get('phase_id'),
+                'session_context': self.context,
+                'conversation_history': self.conversation_memory.get('user_responses', [])
+            }
+            
+            # Genera query per RAG 
+            query_data = self.query_generator_llm.generate_query(checklist_context)
+            
+            # Usa TaskGuidanceLLM per generare domanda intelligente
+            llm_response = self.task_guidance_llm.generate_guidance(checklist_context, query_data or {})
+            
+            # Estrae la domanda dalla risposta JSON dell'LLM
+            import json
+            try:
+                response_data = json.loads(llm_response)
+                question = response_data.get('next_question', response_data.get('message', ''))
+                
+                if question and len(question.strip()) > 10:  # Domanda valida
+                    print(f"DEBUG: LLM generated question: {question}")
+                    return question.strip()
+                
+            except json.JSONDecodeError:
+                print(f"DEBUG: LLM response not JSON, using as text: {llm_response[:100]}...")
+                if llm_response and len(llm_response.strip()) > 10:
+                    return llm_response.strip()
+            
+        except Exception as e:
+            print(f"Warning: LLM question generation failed: {e}")
+        
+        # Fallback se LLM fallisce
+        return self._generate_fallback_question(check, missing_data)
+    
+    def _generate_fallback_question(self, check: Dict, missing_data: List[str]) -> str:
+        """
+        Genera domande hardcoded come fallback quando LLM non è disponibile
+        """
+        known_data = self.conversation_memory.get('extracted_data_history', {})
+        check_id = check['check_id']
+        
+        # Domande contestuali specifiche per check  
+        if check_id == 'ONB-001' and 'first_name' in missing_data:
+            return "Come ti chiami?"
+        elif check_id == 'ONB-002':
+            if 'age' in missing_data and 'birth_date' in missing_data:
+                return "Quanti anni hai e quando sei nato? (es: 29 anni, 31/12/1996)"
+            elif 'age' in missing_data:
+                return "Quanti anni hai?"
+            elif 'birth_date' in missing_data:
+                return "Quando sei nato? (formato DD/MM/YYYY)"
+        elif check_id == 'ONB-003' and 'gender' in missing_data:
+            return "Qual è il tuo genere?"
+        elif check_id == 'ONB-004' and 'height_cm' in missing_data:
+            return "Quanto sei alto?"
+        elif check_id == 'ONB-005' and 'weight_kg' in missing_data:
+            if known_data.get('weight_kg'):
+                return f"Ho capito che pesi {known_data['weight_kg']} kg, è corretto?"
+            else:
+                return "Quanto pesi attualmente?"
+        elif check_id == 'ONB-006':
+            missing_goal = [d for d in missing_data if d in ['goal_type', 'target_weight', 'timeline']]
+            if len(missing_goal) == len(['goal_type', 'target_weight', 'timeline']):
+                return "Qual è il tuo obiettivo? (es: perdere 10 kg in 6 mesi, aumentare massa muscolare)"
+        
+        # Fallback generico
         if check.get('example_questions'):
             return check['example_questions'][0]
         
-        # Altrimenti genera basandosi sui dati mancanti
-        if 'first_name' in missing_data:
-            return "Come ti chiami?"
-        elif 'age' in missing_data:
-            return "Quanti anni hai?"
-        elif 'height_cm' in missing_data:
-            return "Quanto sei alto?"
-        elif 'weight_kg' in missing_data:
-            return "Quanto pesi attualmente?"
-        else:
-            return f"Per completare '{check['description']}', ho bisogno di: {', '.join(missing_data)}"
+        return f"Per completare '{check['description']}', ho bisogno di: {', '.join(missing_data)}"
     
     def _personalize_question_style(self, base_question: str, profile: Dict) -> str:
         """
